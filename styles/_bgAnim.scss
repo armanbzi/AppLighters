@@ -519,7 +519,52 @@
 
 .ccl {
   position: relative;
-  filter: url(#wavy) blur(1px);
+  animation: hueRing 16s linear infinite;
+}
+
+@keyframes hueRing {
+  from { filter: blur(1px) hue-rotate(0deg); }
+  to { filter: blur(1px) hue-rotate(360deg); }
+}
+
+/* Cross-browser smoke: rotating conic wisps masked to a ring band, blurred.
+   Uses only standard CSS (conic-gradient, mask, filter, transform) so it
+   renders in Safari as well as Chrome. */
+.ccl .smoke {
+  position: absolute;
+  top: 24px; left: 24px; right: 24px; bottom: 24px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg,
+    transparent 0deg,
+    rgba(120,255,140,0.45) 22deg,
+    transparent 70deg,
+    rgba(120,255,140,0.28) 130deg,
+    transparent 175deg,
+    rgba(120,255,140,0.50) 240deg,
+    transparent 300deg,
+    rgba(120,255,140,0.30) 335deg,
+    transparent 360deg);
+  -webkit-mask: radial-gradient(circle, transparent 46%, #000 55%, #000 75%, transparent 86%);
+  mask: radial-gradient(circle, transparent 46%, #000 55%, #000 75%, transparent 86%);
+  filter: blur(7px);
+  animation: smokeSpin 16s linear infinite, smokeFlicker 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.ccl .smoke--rev {
+  animation: smokeSpin 24s linear infinite reverse, smokeFlicker 4.5s ease-in-out infinite;
+  opacity: 0.8;
+  filter: blur(13px);
+}
+
+@keyframes smokeSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes smokeFlicker {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0.55; }
 }
 
 .ccl:before {
@@ -559,7 +604,6 @@
   0% {
     box-shadow: 0 0 50px #0F0,
     inset 0 0 50px #0F0;
-    filter: hue-rotate(0deg);
   }
   20% {
     box-shadow: 0 0 40px #0F0,
@@ -580,7 +624,6 @@
   100% {
     box-shadow: 0 0 50px #0F0,
     inset 0 0 50px #0F0;
-    filter: hue-rotate(360deg);
   }
 }
 
