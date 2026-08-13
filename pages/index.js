@@ -2,7 +2,6 @@ import Layout from "../src/components/Layout";
 import {
     Box,
     Button,
-    Stack,
     Typography,
 } from "@mui/material";
 import MobileDev from "../src/components/MobileDev";
@@ -15,6 +14,20 @@ import NextLink from "next/link";
 
 
 export default function Home() {
+    const overline = {
+        color: '#B24FE0',
+        fontWeight: 700,
+        letterSpacing: '.24em',
+        fontSize: {xs:12, lg:13},
+        mb: 1.5,
+    };
+    const sectionTitle = {
+        color: '#fff',
+        fontWeight: 800,
+        fontSize: {xs:34, sm:44, lg:54},
+        lineHeight: 1.1,
+    };
+
     return (
         <Layout>
         <Box sx={{position: 'relative', backgroundColor:'#291D30', minHeight:'calc(100vh - 100px)', overflow:'hidden'}}>
@@ -41,88 +54,75 @@ export default function Home() {
                         sx={{width:{xs:180,sm:205,lg:250}, height:{xs:37,sm:42,lg:48} ,
                             fontSize: {xs:12,sm:15,lg:17}, fontWeight: 'bold', mt: {sm: 3, md: 10}}}>
                     View Our Projects
-                </Button>   
+                </Button>
                 </NextLink>
             </Box>
             </Box>
         </Box>
-        <Box sx={{backgroundColor:'#262728',color:'White',height:{xs:700,sm:800,lg:900},
-            position:'relative',
-        }}>
-            <br/><br/><br/>
-            <Typography sx={{fontSize:{xs:48,sm:58,lg:68} ,
-                lineHeight: 1.06,
-                color: '#fff',
-                textAlign: 'center',
 
-            }}>
-                OUR SERVICES
-            </Typography>
-<br/><br/><br/>
+        {/* Our Services */}
+        <Box sx={{
+            background: 'linear-gradient(180deg, #241f2e 0%, #1b1722 100%)',
+            color: 'white',
+            py: {xs:8, lg:13},
+            px: {xs:2, sm:4},
+        }}>
+            <Box sx={{textAlign:'center', maxWidth:820, mx:'auto', mb:{xs:6, lg:9}}}>
+                <Typography sx={overline}>WHAT WE DO</Typography>
+                <Typography sx={{...sectionTitle, mb:2.5}}>Our Services</Typography>
+                <Typography sx={{color:'rgba(255,255,255,.65)', fontSize:{xs:15, sm:17, lg:18}, lineHeight:1.75}}>
+                    We strive to deliver the best version of the application you wish
+                    to create or upgrade, enhancing your business workflow to the level you desire.
+                    Our team provides skilled developers capable of accelerating your development
+                    process and expanding your technical capabilities.
+                </Typography>
+            </Box>
             <Box sx={{
                 display:'flex',
+                flexWrap:'wrap',
                 justifyContent:'center',
-                alignItems:'center'
+                alignItems:'center',
+                gap:{xs:4, sm:5, lg:7},
+                maxWidth:1200,
+                mx:'auto',
             }}>
-            <Typography sx={{
-                fontSize:{xs:16,sm:18,lg:24} ,
-                lineHeight: 1.67,
-                color: '#fff',
-                textAlign: 'center',
-                position:'relative',
-               maxWidth:{xs:400,sm:800,lg:800}
-
-            }}>
-                We strive to deliver the best version of the application you wish
-                to create or upgrade, enhancing your business workflow to the level you desire.
-                Our team provides skilled developers capable of accelerating your development
-                process and expanding your technical capabilities.
-            </Typography>
-            </Box>
-        <Stack direction="row" spacing={{xs:-2,sm:2,lg:6}} sx={{justifyContent:'center',marginLeft:-6,
-            alignItems:'center',
-            mt: {sm: 4, md: 6}}}>
                 <MobileDev/>
                 <WebDev/>
                 <DesktopDev/>
                 <Blockchain/>
-
-        </Stack>
+            </Box>
         </Box>
-        <Box sx={{backgroundColor: 'black',
-            color: 'White',
-            height: {xs:1600,sm:1600,lg:800},
-            alignItems:'center'}}>
-            <br/><br/><br/>
-        <Typography sx={{
-            textAlign:'center',
-            fontSize:{xs:48 ,sm:58 ,lg:68},
-            lineHeight: 1.06,}}>
-            OUR CLIENTS
 
-        </Typography>
-            <Stack direction={{xs:"column",sm:"column",lg:"row"}} spacing={9} sx={{marginTop:{xs:10,sm:8,lg:17},
-            justifyContent:'center',
+        {/* Our Clients */}
+        <Box sx={{
+            background: 'linear-gradient(180deg, #191521 0%, #0f0d14 100%)',
+            color: 'white',
+            py: {xs:8, lg:13},
+            px: {xs:2, sm:4},
+        }}>
+            <Box sx={{textAlign:'center', mb:{xs:7, lg:10}}}>
+                <Typography sx={overline}>TRUSTED BY</Typography>
+                <Typography sx={sectionTitle}>Our Clients</Typography>
+            </Box>
+            <Box sx={{
+                display:'flex',
+                flexWrap:'wrap',
+                justifyContent:'center',
                 alignItems:'center',
-                display:'flex'
+                gap:{xs:4, sm:5, lg:8},
+                maxWidth:1100,
+                mx:'auto',
             }}>
-            <ClCards title={'RHP LTD'} img={"/images/rhpltd.jpg"}
-            url={"https://www.rhpltd.net/"}/>
+                <ClCards title={'RHP LTD'} img={"/images/rhpltd.jpg"}
+                url={"https://www.rhpltd.net/"}/>
                 <ClCards title={'Novartis'} img={"/images/Norvatis.png"}
                 url={"https://www.novartis.com/"}/>
                 <ClCards title={'Daiichi Sankyo'} img={"/images/Daiichi.png"}
                 url={"https://www.daiichisankyo.com/"}/>
                 <ClCards title={'Icheers'} img={"/images/iCheers.jpg"}
                 url={"http://icheersinfo.com/en/index.html"}/>
-            </Stack>
+            </Box>
         </Box>
-
-
-
-
-
-
-
 
     </Layout>);
 }
