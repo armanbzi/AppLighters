@@ -532,29 +532,44 @@
    renders in Safari as well as Chrome. */
 .ccl .smoke {
   position: absolute;
-  top: 24px; left: 24px; right: 24px; bottom: 24px;
+  top: -12px; left: -12px; right: -12px; bottom: -12px;
   border-radius: 50%;
-  background: conic-gradient(from 0deg,
-    transparent 0deg,
-    rgba(120,255,140,0.45) 22deg,
-    transparent 70deg,
-    rgba(120,255,140,0.28) 130deg,
-    transparent 175deg,
-    rgba(120,255,140,0.50) 240deg,
-    transparent 300deg,
-    rgba(120,255,140,0.30) 335deg,
-    transparent 360deg);
-  -webkit-mask: radial-gradient(circle, transparent 46%, #000 55%, #000 75%, transparent 86%);
-  mask: radial-gradient(circle, transparent 46%, #000 55%, #000 75%, transparent 86%);
-  filter: blur(7px);
-  animation: smokeSpin 16s linear infinite, smokeFlicker 3.5s ease-in-out infinite;
+  -webkit-mask: radial-gradient(circle, transparent 36%, #000 50%, #000 84%, transparent 97%);
+  mask: radial-gradient(circle, transparent 36%, #000 50%, #000 84%, transparent 97%);
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
-.ccl .smoke--rev {
-  animation: smokeSpin 24s linear infinite reverse, smokeFlicker 4.5s ease-in-out infinite;
-  opacity: 0.8;
-  filter: blur(13px);
+.ccl .smoke-1 {
+  background: conic-gradient(from 0deg,
+    transparent 0deg, rgba(140,255,165,0.75) 9deg, transparent 28deg,
+    rgba(140,255,165,0.42) 52deg, transparent 74deg,
+    rgba(140,255,165,0.80) 116deg, transparent 140deg,
+    rgba(140,255,165,0.48) 170deg, transparent 196deg,
+    rgba(140,255,165,0.72) 232deg, transparent 258deg,
+    rgba(140,255,165,0.52) 298deg, transparent 322deg,
+    rgba(140,255,165,0.64) 344deg, transparent 360deg);
+  filter: blur(5px);
+  animation: smokeSpin 15s linear infinite, smokeFlicker 3.4s ease-in-out infinite;
+}
+
+.ccl .smoke-2 {
+  background: conic-gradient(from 90deg,
+    transparent 0deg, rgba(150,255,175,0.50) 28deg, transparent 72deg,
+    rgba(150,255,175,0.58) 138deg, transparent 186deg,
+    rgba(150,255,175,0.36) 248deg, transparent 298deg,
+    rgba(150,255,175,0.52) 334deg, transparent 360deg);
+  filter: blur(19px);
+  animation: smokeSpin 23s linear infinite reverse, smokeFlicker 4.6s ease-in-out infinite;
+}
+
+.ccl .smoke-3 {
+  background: conic-gradient(from 200deg,
+    transparent 0deg, rgba(110,255,145,0.44) 42deg, transparent 96deg,
+    rgba(110,255,145,0.32) 165deg, transparent 214deg,
+    rgba(110,255,145,0.48) 286deg, transparent 336deg);
+  filter: blur(30px);
+  animation: smokeSpin 33s linear infinite, smokeFlicker 5.7s ease-in-out infinite;
 }
 
 @keyframes smokeSpin {

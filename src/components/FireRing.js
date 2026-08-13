@@ -12,8 +12,9 @@ export default function FireRing() {
                      transform: 'translate(-50%, -50%)',
                      marginTop:{xs:-7,sm:5,lg:2}
             }}>
-                <span className="smoke"/>
-                <span className="smoke smoke--rev"/>
+                <span className="smoke smoke-1"/>
+                <span className="smoke smoke-2"/>
+                <span className="smoke smoke-3"/>
             </Box>
         </div>
     );
