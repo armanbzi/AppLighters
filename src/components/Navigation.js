@@ -31,10 +31,10 @@ const Navigation = ({menu}) => {
         top: 0,
         transition: "top 300ms cubic-bezier(0.4, 0, 0.2, 1) 0m",
         zIndex: "1100",
-        backdropFilter: "blur(18px)",
-        WebkitBackdropFilter: "blur(18px)",
+        backdropFilter: "blur(7px)",
+        WebkitBackdropFilter: "blur(7px)",
         borderBottom: "1px solid rgba(255,255,255,0.08)",
-        backgroundColor: "rgba(19, 17, 25, 0.85)",
+        backgroundColor: "rgba(19, 17, 25, 0.35)",
     }}>
         <Container sx={{px: {sm: "30px", md: "20px"}, display: "flex", alignItems: "center", minHeight: 100}}>
             <NextLink href="/" passHref>
