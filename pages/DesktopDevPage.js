@@ -1,7 +1,6 @@
 import Layout from "../src/components/Layout";
 import {
     Box,
-    Stack,
     Typography,
 } from "@mui/material";
 import DesktopDevPageAnim from '../src/components/DesktopDevPageAnim.js';
@@ -15,39 +14,34 @@ export default function DesktopDevPage() {
             <Box sx={{height:'calc(100vh - 100px)'}}>
                 <DesktopDevPageAnim/>
             </Box>
-            <Box sx={{position:'relative',
-                height: {xs:450,sm:580,lg:580},
-                backgroundColor: '#3f3648',
+
+            <Box sx={{
+                background: 'linear-gradient(180deg, #3a3446 0%, #262130 100%)',
+                px: {xs:2, sm:4},
+                py: {xs:9, lg:13},
+                display: 'flex',
+                justifyContent: 'center',
             }}>
-                <Box sx={{
-                    position:'absolute',
-                    left:{xs:30,sm:70,lg:180},
-                    top:'120px',
-                }}>
-
-
-
-                    <Typography sx={{color:'#983cea',
-                        fontSize: {xs:30,sm:40,lg:50},
-                        lineHeight: 1.12,
-                        fontWeight: 'bold',
-                        maxWidth:{xs:380,sm:800,lg:900}
+                <Box sx={{textAlign:'center', maxWidth:760}}>
+                    <Typography sx={{
+                        color:'#C98BFF',
+                        fontWeight:800,
+                        fontSize:{xs:26, sm:34, lg:42},
+                        lineHeight:1.16,
+                        mb:2.5,
                     }}>
                         Our Desktop apps are not ready YET...
-                    </Typography><br/><br/><br/>
+                    </Typography>
                     <Typography sx={{
-                        marginTop:{xs:-4,sm:0,lg:0},
-                        fontSize: {xs:16,sm:18,lg:20},
-                        lineHeight: 1.8,
-                        color: 'rgba(255,255,255,.75)',
-                        fontFamily: 'Roboto,Arial,Helvetica,sans-serif',
-                        width:{xs:380,sm:800,lg:950},
+                        color:'rgba(255,255,255,.7)',
+                        fontSize:{xs:15, sm:17, lg:19},
+                        lineHeight:1.75,
                     }}>
-                        Our highly skilled team is currently engaged in the development of our first Desktop apps which will be added to our portfolio as soon as they are ready.
+                        Our highly skilled team is currently engaged in the development of our first Desktop apps
+                        which will be added to our portfolio as soon as they are ready.
                     </Typography>
                 </Box>
             </Box>
-
-
-        </Layout>);
+        </Layout>
+    );
 }
