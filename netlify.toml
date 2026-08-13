@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+  cache = { paths = ["node_modules", ".next/cache", ".next/server"] }
+
+[context.production.environment]
+  NODE_ENV = "production"
