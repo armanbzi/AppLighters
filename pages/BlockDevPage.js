@@ -12,12 +12,12 @@ import BlockDevPageAnim from '../src/components/BlcokDevPageAnim';
 export default function BlockDevPage() {
     return (
         <Layout>
-            <Box sx={{height:602}}>
+            <Box sx={{height:'calc(100vh - 100px)'}}>
                 <BlockDevPageAnim/>
             </Box>
             <Box sx={{position:'relative',
                 height: {xs:600,sm:650,lg:700},
-                backgroundColor: 'hsla(210,4%,90%,.4)',
+                backgroundColor: '#3f3648',
             }}>
                 <Box sx={{
                     position:'absolute',
@@ -37,7 +37,7 @@ export default function BlockDevPage() {
                         marginTop:{xs:-4,sm:0,lg:0},
                         fontSize: {xs:16,sm:18,lg:20},
                         lineHeight: 1.8,
-                        color: 'rgba(29,31,38,.75)',
+                        color: 'rgba(255,255,255,.75)',
                         fontFamily: 'Roboto,Arial,Helvetica,sans-serif',
                         width:{xs:380,sm:800,lg:950},
                     }}>

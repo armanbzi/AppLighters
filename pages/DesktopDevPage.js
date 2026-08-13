@@ -12,12 +12,12 @@ import DesktopDevPageAnim from '../src/components/DesktopDevPageAnim.js';
 export default function DesktopDevPage() {
     return (
         <Layout>
-            <Box sx={{height: 610}}>
+            <Box sx={{height:'calc(100vh - 100px)'}}>
                 <DesktopDevPageAnim/>
             </Box>
             <Box sx={{position:'relative',
                 height: {xs:450,sm:580,lg:580},
-                backgroundColor: 'hsla(210,4%,90%,.4)',
+                backgroundColor: '#3f3648',
             }}>
                 <Box sx={{
                     position:'absolute',
@@ -39,7 +39,7 @@ export default function DesktopDevPage() {
                         marginTop:{xs:-4,sm:0,lg:0},
                         fontSize: {xs:16,sm:18,lg:20},
                         lineHeight: 1.8,
-                        color: 'rgba(29,31,38,.75)',
+                        color: 'rgba(255,255,255,.75)',
                         fontFamily: 'Roboto,Arial,Helvetica,sans-serif',
                         width:{xs:380,sm:800,lg:950},
                     }}>
