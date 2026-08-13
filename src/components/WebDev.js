@@ -1,4 +1,3 @@
-import lottie from "lottie-web";
 import WebDevelopment from '/public/svg/WebDevelopment.json';
 import React, { useState } from 'react';
 import {
@@ -10,15 +9,19 @@ import NextLink from "next/link";
 
 export default function WebDev() {
     React.useEffect(() => {
-        lottie.loadAnimation({
-            container: document.querySelector("#WebDevelopment"),
-            animationData: WebDevelopment,
-            autoplay: isHover,
+        let anim;
+        import("lottie-web").then(({ default: lottie }) => {
+            anim = lottie.loadAnimation({
+                container: document.querySelector("#WebDevelopment"),
+                animationData: WebDevelopment,
+                autoplay: isHover,
+            });
         });
+        return () => anim && anim.destroy();
     }, []);
     const [isHover, setIsHover] = useState('False');
     return (
-        <Link sx={{ textDecoration:'none'}} href={'/WebDevPage'} passHref>
+        <Link sx={{ textDecoration:'none'}} href={'/WebDevPage'}>
         <Box
            onMouseEnter={()=>{setIsHover('True')}}
            onMouseLeave={()=>{setIsHover('False')}}

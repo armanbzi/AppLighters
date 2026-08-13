@@ -46,7 +46,7 @@ const Navigation = ({menu}) => {
                 <MenuBar>
                     <ul role="menubar">
                         {menus.map((m, idx) => <li key={`NAV__${idx}`} role="none">
-                            <Link href={m.url} passHref>
+                            <Link href={m.url}>
                                 <Box sx={{
                                     display: "inline-block",
                                     backgroundColor: idx === menu ? "#F3F6F9" : "transparent",
@@ -133,7 +133,7 @@ const Navigation = ({menu}) => {
                         }}>
                             <MobileMenu>
                                 {menus.map((m, idx) => <li key={`MNAV__${idx}`}>
-                                    <Link sx={{textDecoration: 'none',color: 'red',}} href={m.url} passHref>
+                                    <Link sx={{textDecoration: 'none',color: 'red',}} href={m.url}>
                                         <Box sx={{
                                             color: '#4b435a',
                                             textDecoration: 'none',

@@ -1,4 +1,3 @@
-import lottie from "lottie-web";
 import DesktopDevelopment from '/public/svg/DesktopDevelopment.json';
 import React, { useState } from 'react';
 import {
@@ -10,15 +9,19 @@ import NextLink from "next/link";
 
 export default function DesktopDev() {
     React.useEffect(() => {
-        lottie.loadAnimation({
-            container: document.querySelector("#DesktopDevelopment"),
-            animationData: DesktopDevelopment,
-            autoplay: isHover,
+        let anim;
+        import("lottie-web").then(({ default: lottie }) => {
+            anim = lottie.loadAnimation({
+                container: document.querySelector("#DesktopDevelopment"),
+                animationData: DesktopDevelopment,
+                autoplay: isHover,
+            });
         });
+        return () => anim && anim.destroy();
     }, []);
     const [isHover, setIsHover] = useState('False');
     return (
-        <Link sx={{ textDecoration:'none'}} href={'/DesktopDevPage'} passHref>
+        <Link sx={{ textDecoration:'none'}} href={'/DesktopDevPage'}>
         <Box
            onMouseEnter={()=>{setIsHover('True')}}
            onMouseLeave={()=>{setIsHover('False')}}

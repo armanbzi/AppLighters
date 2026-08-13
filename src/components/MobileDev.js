@@ -1,4 +1,3 @@
-import lottie from "lottie-web";
 import MobileDevelopment from "/public/svg/MobileDevelopment.json";
 import React, { useState } from 'react';
 import {
@@ -11,15 +10,19 @@ import NextLink from "next/link";
 
 export default function MobileDev() {
     React.useEffect(() => {
-        lottie.loadAnimation({
-            container: document.querySelector("#MobileDevelopment"),
-            animationData: MobileDevelopment,
-            autoplay: isHover,
+        let anim;
+        import("lottie-web").then(({ default: lottie }) => {
+            anim = lottie.loadAnimation({
+                container: document.querySelector("#MobileDevelopment"),
+                animationData: MobileDevelopment,
+                autoplay: isHover,
+            });
         });
+        return () => anim && anim.destroy();
     }, []);
     const [isHover, setIsHover] = useState('False');
     return (
-        <Link sx={{textDecoration:'none'}} href={'/MobileDevPage'} passHref>
+        <Link sx={{textDecoration:'none'}} href={'/MobileDevPage'}>
         <Box
            onMouseEnter={()=>{setIsHover('True')}}
            onMouseLeave={()=>{setIsHover('False')}}

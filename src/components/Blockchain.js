@@ -1,4 +1,3 @@
-import lottie from "lottie-web";
 import BlockchainDev from "/public/svg/BlockchainDev.json";
 import React, { useState } from 'react';
 import {
@@ -10,15 +9,19 @@ import NextLink from "next/link";
 
 export default function Blockchain() {
     React.useEffect(() => {
-        lottie.loadAnimation({
-            container: document.querySelector("#BlockchainDev"),
-            animationData: BlockchainDev,
-            autoplay: isHover,
+        let anim;
+        import("lottie-web").then(({ default: lottie }) => {
+            anim = lottie.loadAnimation({
+                container: document.querySelector("#BlockchainDev"),
+                animationData: BlockchainDev,
+                autoplay: isHover,
+            });
         });
+        return () => anim && anim.destroy();
     }, []);
     const [isHover, setIsHover] = useState('False');
     return (
-        <Link sx={{textDecoration:'none'}} href={'/BlockDevPage'} passHref>
+        <Link sx={{textDecoration:'none'}} href={'/BlockDevPage'}>
         <Box
            onMouseEnter={()=>{setIsHover('True')}}
            onMouseLeave={()=>{setIsHover('False')}}
