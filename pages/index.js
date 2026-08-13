@@ -17,7 +17,7 @@ import NextLink from "next/link";
 export default function Home() {
     return (
         <Layout>
-        <Box sx={{position: 'relative', backgroundColor:'#291D30',height:{xs:565,sm:565,lg:565}}}>
+        <Box sx={{position: 'relative', backgroundColor:'#291D30', minHeight:'calc(100vh - 100px)', overflow:'hidden'}}>
             <Box sx={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -26,7 +26,7 @@ export default function Home() {
             }}>
             <FireRing/>
             </Box>
-            <Box sx={{position:'absolute',top:{xs:166,sm:150,lg:170},left:0,right:0,bottom:0,alignItems:'center',justifyContent:'center'}}>
+            <Box sx={{position:'absolute',top:'50%',left:0,right:0,transform:'translateY(-50%)',alignItems:'center',justifyContent:'center'}}>
                 <Typography sx={{
                     fontSize: {xs:38,sm:42,lg:52},
                     lineHeight: 1.19,
