@@ -11,12 +11,12 @@ import DesktopDevPageAnim from '../src/components/DesktopDevPageAnim.js';
 export default function DesktopDevPage() {
     return (
         <Layout>
-            <Box sx={{height:'100vh', marginTop:'-100px'}}>
+            <Box sx={{height:'100vh', marginTop:'-100px', position:'relative'}}>
                 <DesktopDevPageAnim/>
             </Box>
 
             <Box sx={{
-                background: 'linear-gradient(180deg, #3a3446 0%, #262130 100%)',
+                background: 'transparent',
                 px: {xs:2, sm:4},
                 py: {xs:9, lg:13},
                 display: 'flex',

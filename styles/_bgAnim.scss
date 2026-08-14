@@ -10,7 +10,9 @@
 
 .deskBg
 {
-  height: 100%;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
   background: radial-gradient(ellipse at bottom, #460A58 0%, #090a0f 100%);
   overflow: hidden;
 }
