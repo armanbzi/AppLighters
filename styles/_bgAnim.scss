@@ -12,8 +12,8 @@
 {
   position: fixed;
   inset: 0;
-  z-index: -1;
-  background: radial-gradient(ellipse at bottom, #17161d 0%, #0a090f 100%);
+  z-index: 1;
+  pointer-events: none;
   overflow: hidden;
 }
 
@@ -27,7 +27,7 @@
   font-size: 72px;
   line-height: 1.02;
   letter-spacing: -0.025em;
-  z-index: 1;
+  z-index: 2;
   font-weight: 800;
   background: linear-gradient(118deg, #ffffff 0%, #f1e4ff 42%, #C98BFF 100%);
   -webkit-background-clip: text;

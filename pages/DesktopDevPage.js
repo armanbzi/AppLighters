@@ -12,18 +12,18 @@ export default function DesktopDevPage() {
     return (
         <Layout>
             <Box sx={{height:'100vh', marginTop:'-100px', position:'relative',
-                background:'radial-gradient(ellipse at bottom, rgba(74,12,92,0.72) 0%, rgba(10,9,16,0.25) 74%)'}}>
+                background:'radial-gradient(ellipse at bottom, #460A58 0%, #090a0f 100%)'}}>
                 <DesktopDevPageAnim/>
             </Box>
 
             <Box sx={{
-                background: 'linear-gradient(180deg, rgba(58,52,70,0.72) 0%, rgba(38,33,48,0.80) 100%)',
+                background: 'linear-gradient(180deg, #3a3446 0%, #262130 100%)',
                 px: {xs:2, sm:4},
                 py: {xs:9, lg:13},
                 display: 'flex',
                 justifyContent: 'center',
             }}>
-                <Box sx={{textAlign:'center', maxWidth:760}}>
+                <Box sx={{textAlign:'center', maxWidth:760, position:'relative', zIndex:2}}>
                     <Typography sx={{
                         color:'#C98BFF',
                         fontWeight:800,
