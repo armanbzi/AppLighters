@@ -22,11 +22,13 @@ export default function WebDevPage() {
         gap: {xs:2.5, lg:3.5},
         maxWidth: 1180,
         mx: 'auto',
+        position: 'relative',
+        zIndex: 2,
     };
 
     return (
         <Layout>
-            <Box sx={{minHeight:'100vh', marginTop:'-100px'}}>
+            <Box sx={{minHeight:'100vh', marginTop:'-100px', position:'relative', background:'#460A58'}}>
                 <WebDevPageAnim/>
             </Box>
 
@@ -38,7 +40,7 @@ export default function WebDevPage() {
             }}>
 
                 {/* Intro */}
-                <Box sx={{textAlign:'center', maxWidth:840, mx:'auto', mb:{xs:7, lg:10}}}>
+                <Box sx={{textAlign:'center', maxWidth:840, mx:'auto', mb:{xs:7, lg:10}, position:'relative', zIndex:2}}>
                     <Typography sx={{
                         color:'#C98BFF',
                         fontWeight:800,
@@ -67,6 +69,8 @@ export default function WebDevPage() {
                     textAlign:'center',
                     letterSpacing:'.02em',
                     mb:{xs:3.5, lg:5},
+                    position:'relative',
+                    zIndex:2,
                 }}>
                     Our Web Apps
                 </Typography>

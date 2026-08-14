@@ -107,12 +107,11 @@
 
 
 .area{
-  background: #460A58;
-  background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
-  width: 100%;
-  min-height: 100vh;
-
-
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
 }
 
 .gerd{
