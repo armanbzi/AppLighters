@@ -29,6 +29,15 @@ export default function ProjectCard({ name, img, url, frameWorks = [] }) {
                     outline: "2px solid rgba(178,79,224,0.75)",
                     outlineOffset: "3px",
                 },
+                "& .pc-tags, & .pc-cta": {
+                    opacity: 0,
+                    transform: "translateY(8px)",
+                    transition: "opacity .32s ease, transform .32s ease",
+                },
+                "&:hover .pc-tags, &:hover .pc-cta, &:focus-visible .pc-tags, &:focus-visible .pc-cta": {
+                    opacity: 1,
+                    transform: "translateY(0)",
+                },
                 transition:
                     "transform .28s ease, box-shadow .28s ease, border-color .28s ease, background-color .28s ease",
                 "&:hover": {
@@ -78,6 +87,7 @@ export default function ProjectCard({ name, img, url, frameWorks = [] }) {
 
             {tags.length > 0 && (
                 <Stack
+                    className="pc-tags"
                     direction="row"
                     useFlexGap
                     flexWrap="wrap"
