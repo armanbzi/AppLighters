@@ -30,7 +30,7 @@ export default function Home() {
 
     return (
         <Layout>
-        <Box sx={{position: 'relative', backgroundColor:'#291D30', minHeight:'calc(100vh - 100px)', overflow:'hidden'}}>
+        <Box sx={{position: 'relative', backgroundColor:'#291D30', minHeight:'100vh', marginTop:'-100px', overflow:'hidden'}}>
             <Box sx={{
                 display: 'flex',
                 justifyContent: 'center',

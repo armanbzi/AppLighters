@@ -11,7 +11,7 @@ import DesktopDevPageAnim from '../src/components/DesktopDevPageAnim.js';
 export default function DesktopDevPage() {
     return (
         <Layout>
-            <Box sx={{height:'calc(100vh - 100px)'}}>
+            <Box sx={{height:'100vh', marginTop:'-100px'}}>
                 <DesktopDevPageAnim/>
             </Box>
 

@@ -11,7 +11,7 @@ import BlockDevPageAnim from '../src/components/BlcokDevPageAnim';
 export default function BlockDevPage() {
     return (
         <Layout>
-            <Box sx={{height:'calc(100vh - 100px)'}}>
+            <Box sx={{height:'100vh', marginTop:'-100px'}}>
                 <BlockDevPageAnim/>
             </Box>
 

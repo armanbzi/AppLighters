@@ -31,7 +31,7 @@ export default function MobileDevPage() {
 
     return (
         <Layout>
-            <Box sx={{minHeight:'calc(100vh - 100px)'}}>
+            <Box sx={{minHeight:'100vh', marginTop:'-100px'}}>
                 <MobileDevPageAnim/>
             </Box>
 
