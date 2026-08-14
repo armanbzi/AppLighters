@@ -16,7 +16,7 @@ export default function DesktopDevPage() {
             </Box>
 
             <Box sx={{
-                background: 'transparent',
+                background: 'linear-gradient(180deg, rgba(58,52,70,0.72) 0%, rgba(38,33,48,0.80) 100%)',
                 px: {xs:2, sm:4},
                 py: {xs:9, lg:13},
                 display: 'flex',
