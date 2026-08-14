@@ -61,6 +61,11 @@ export default function Portfolio() {
                         fontWeight:800,
                         fontSize:{xs:36, sm:46, lg:56},
                         lineHeight:1.08,
+                        letterSpacing:'-0.02em',
+                        background: 'linear-gradient(118deg, #ffffff 0%, #f1e4ff 45%, #C98BFF 100%)',
+                        WebkitBackgroundClip: 'text',
+                        backgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
                         mb:2,
                     }}>
                         Our Work

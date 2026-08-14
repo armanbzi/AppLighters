@@ -26,6 +26,11 @@ export default function Home() {
         fontWeight: 800,
         fontSize: {xs:34, sm:44, lg:54},
         lineHeight: 1.1,
+        letterSpacing: '-0.02em',
+        background: 'linear-gradient(118deg, #ffffff 0%, #f1e4ff 45%, #C98BFF 100%)',
+        WebkitBackgroundClip: 'text',
+        backgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
     };
 
     return (

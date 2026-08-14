@@ -23,9 +23,15 @@
   height: 731px;
   padding-left: 12.5%;
   font-size: 72px;
-  line-height: 1.08;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
   z-index: 1;
-  font-weight: bold;
+  font-weight: 800;
+  background: linear-gradient(118deg, #ffffff 0%, #f1e4ff 42%, #C98BFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 6px 24px rgba(0, 0, 0, 0.45));
 }
 
 .cube {
