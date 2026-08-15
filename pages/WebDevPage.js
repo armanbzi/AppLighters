@@ -27,7 +27,7 @@ export default function WebDevPage() {
     };
 
     return (
-        <Layout>
+        <Layout footerCoversBg>
             <Box sx={{minHeight:'100vh', marginTop:'-100px', position:'relative', background:'#460A58'}}>
                 <WebDevPageAnim/>
             </Box>
@@ -37,6 +37,8 @@ export default function WebDevPage() {
                 pt: {xs:7, lg:11},
                 pb: {xs:8, lg:14},
                 px: {xs:2, sm:4},
+                position: 'relative',
+                zIndex: 2,
             }}>
 
                 {/* Intro */}
