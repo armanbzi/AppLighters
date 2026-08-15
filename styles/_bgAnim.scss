@@ -17,6 +17,16 @@
   overflow: hidden;
 }
 
+// Blockchain particles detect the mouse on `window`, so the canvas itself does
+// not need to capture pointer events. Making it click-through keeps the whole
+// footer (form, links, text) usable while the particles stay interactive everywhere.
+#bc-particles,
+#bc-particles canvas,
+.tsparticles-canvas-el,
+canvas.tsparticles-canvas-el {
+  pointer-events: none !important;
+}
+
 .hero__title {
   color: #fff;
   position: absolute;
