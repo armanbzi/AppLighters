@@ -1,19 +1,12 @@
 import createCache from '@emotion/cache';
 
-const isBrowser = typeof document !== 'undefined';
-
-// On the client, anchor Emotion's insertion to the <meta> that _document.js
-// renders, so client-inserted styles land in the same place as the SSR ones
-// and the cascade matches between server and client (no hydration reshuffle).
+// No insertionPoint on purpose. This app imports a global stylesheet
+// (styles/_bgAnim.scss) whose classes (.ccl, .hero__title, …) are meant to be
+// overridden by MUI `sx`. That only holds if Emotion's styles come AFTER the
+// SCSS in the cascade. Anchoring Emotion to an early insertion point flipped
+// that order and the SCSS started winning (the fire ring lost its centring and
+// the dev-page headlines lost their responsive font sizes). Leaving Emotion at
+// its default insertion keeps it last, so `sx` wins as before.
 export default function createEmotionCache() {
-  let insertionPoint;
-
-  if (isBrowser) {
-    const emotionInsertionPoint = document.querySelector(
-      'meta[name="emotion-insertion-point"]',
-    );
-    insertionPoint = emotionInsertionPoint ?? undefined;
-  }
-
-  return createCache({ key: 'css', insertionPoint });
+  return createCache({ key: 'css' });
 }

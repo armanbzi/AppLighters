@@ -10,12 +10,7 @@ import createEmotionCache from "../styles/createEmotionCache";
 export default function MyDocument({ emotionStyleTags }) {
     return (
         <Html lang="en">
-            <Head>
-                {/* Inserted by _app's Emotion cache (insertionPoint) so client
-                    styles land after these and can still override them. */}
-                <meta name="emotion-insertion-point" content="" />
-                {emotionStyleTags}
-            </Head>
+            <Head>{emotionStyleTags}</Head>
             <body>
                 <Main />
                 <NextScript />

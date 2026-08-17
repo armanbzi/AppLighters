@@ -4,19 +4,48 @@ import {styled} from "@mui/system";
 import {useContext, useState} from "react";
 
 // The sticky nav is ~100px tall; offset the target so the form isn't tucked
-// under it. Uses native smooth scrolling (html { scroll-behavior: smooth } in
-// theme.js) — a single scrollTo the browser animates on the compositor. The
-// old react-scroll animation drove scrollTop per frame, and with CSS smooth
-// scrolling on, every one of those frames was itself smooth-animated by the
-// browser, so the two fought and the scroll juddered.
+// under it. We drive the scroll ourselves with requestAnimationFrame + an
+// easing curve so the duration is tunable (native `behavior: 'smooth'` is not,
+// and felt too fast). During the animation we disable the CSS smooth scrolling
+// from theme.js (html { scroll-behavior: smooth }); otherwise the browser would
+// re-smooth every per-frame scrollTo and the two would fight — that double
+// animation was the original judder.
 const NAV_OFFSET = 90;
+const SCROLL_DURATION = 1300; // ms — a deliberate, unhurried glide
 
 function scrollToEstimate() {
     if (typeof window === "undefined") return;
     const el = document.getElementById("Estimate");
     if (!el) return;
-    const top = el.getBoundingClientRect().top + window.pageYOffset - NAV_OFFSET;
-    window.scrollTo({ top, behavior: "smooth" });
+
+    const startY = window.pageYOffset;
+    const targetY = el.getBoundingClientRect().top + startY - NAV_OFFSET;
+
+    // Honour a reduced-motion preference: jump straight there.
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        window.scrollTo(0, targetY);
+        return;
+    }
+
+    const distance = targetY - startY;
+    const html = document.documentElement;
+    const prevBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
+
+    const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+    let startTime;
+    const step = (now) => {
+        if (startTime === undefined) startTime = now;
+        const t = Math.min((now - startTime) / SCROLL_DURATION, 1);
+        window.scrollTo(0, startY + distance * easeInOutCubic(t));
+        if (t < 1) {
+            requestAnimationFrame(step);
+        } else {
+            html.style.scrollBehavior = prevBehavior; // restore CSS smooth scrolling
+        }
+    };
+    requestAnimationFrame(step);
 }
 
 
