@@ -26,20 +26,14 @@ const aiApps = [
     {
         name: 'ToastAi',
         url: 'https://toastai.app',
-        img: null,
+        img: '/images/toastai.png',
         frameWorks: ['React Native', 'Gemini', 'ElevenLabs'],
     },
     {
         name: 'FamTale',
         url: 'https://famtale.app',
-        img: null,
+        img: '/images/famtale.png',
         frameWorks: ['React Native', 'Firebase', 'Vertex AI'],
-    },
-    {
-        name: 'SameMinute',
-        url: 'https://sameminute.app',
-        img: null,
-        frameWorks: ['React Native', 'Firebase', 'Firestore Rules'],
     },
 ];
 
