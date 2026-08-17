@@ -1,9 +1,21 @@
+import { useState } from "react";
 import { Box, Typography, Stack } from "@mui/material";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
+import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 
-export default function ProjectCard({ name, img, url, frameWorks = [] }) {
+// Two initials from the name's capitals (ToastAi -> TA), falling back to the
+// first two characters for names that carry none.
+function initialsFor(name) {
+    const caps = (name || "").replace(/[^A-Za-z0-9 ]/g, " ").match(/[A-Z]/g);
+    if (caps && caps.length) return caps.join("").slice(0, 2);
+    return (name || "?").slice(0, 2).toUpperCase();
+}
+
+export default function ProjectCard({ name, img, url, frameWorks = [], ai = false }) {
     const tags = (frameWorks || []).filter(Boolean);
     const isExternal = typeof url === "string" && url.startsWith("http");
+    const [imgFailed, setImgFailed] = useState(false);
+    const showTile = !img || imgFailed;
 
     return (
         <Box
@@ -12,6 +24,7 @@ export default function ProjectCard({ name, img, url, frameWorks = [] }) {
             {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
             sx={{
                 textDecoration: "none",
+                position: "relative",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -51,6 +64,34 @@ export default function ProjectCard({ name, img, url, frameWorks = [] }) {
                 },
             }}
         >
+            {ai && (
+                <Box
+                    sx={{
+                        position: "absolute",
+                        top: 12,
+                        right: 12,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        px: 0.9,
+                        py: 0.4,
+                        borderRadius: "999px",
+                        background:
+                            "linear-gradient(135deg, rgba(201,139,255,0.22) 0%, rgba(126,43,216,0.32) 100%)",
+                        border: "1px solid rgba(201,139,255,0.45)",
+                        backdropFilter: "blur(4px)",
+                        color: "#E9D4FF",
+                        fontSize: 11,
+                        fontWeight: 700,
+                        letterSpacing: ".08em",
+                        lineHeight: 1,
+                    }}
+                >
+                    <AutoAwesomeRoundedIcon sx={{ fontSize: 12 }} />
+                    AI
+                </Box>
+            )}
+
             <Box
                 className="pc-logo"
                 sx={{
@@ -65,11 +106,34 @@ export default function ProjectCard({ name, img, url, frameWorks = [] }) {
                     bgcolor: "rgba(0,0,0,0.25)",
                 }}
             >
-                <img
-                    src={img}
-                    alt={name}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                />
+                {showTile ? (
+                    <Box
+                        aria-hidden="true"
+                        sx={{
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            background: "linear-gradient(135deg, #C98BFF 0%, #7E2BD8 100%)",
+                            color: "#fff",
+                            fontWeight: 800,
+                            fontSize: 32,
+                            letterSpacing: ".02em",
+                            lineHeight: 1,
+                        }}
+                    >
+                        {initialsFor(name)}
+                    </Box>
+                ) : (
+                    <img
+                        src={img}
+                        alt={name}
+                        loading="lazy"
+                        onError={() => setImgFailed(true)}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                )}
             </Box>
 
             <Typography

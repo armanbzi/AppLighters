@@ -16,7 +16,7 @@ let menus = [
         title: "WEB", url: "/WebDevPage"
     },
     {
-        title: "DESKTOP", url: "/DesktopDevPage"
+        title: "AI INTEGRATED", url: "/AiDevPage"
     },
     {
         title: "BLOCKCHAIN", url: "/BlockDevPage"

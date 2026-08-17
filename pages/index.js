@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import MobileDev from "../src/components/MobileDev";
 import WebDev from "../src/components/WebDev";
-import DesktopDev from "../src/components/DesktopDev";
+import AiDev from "../src/components/AiDev";
 import Blockchain from "../src/components/Blockchain";
 import ClCards from '../src/components/ClCards';
 import FireRing from '../src/components/FireRing'
@@ -93,7 +93,7 @@ export default function Home() {
             }}>
                 <MobileDev/>
                 <WebDev/>
-                <DesktopDev/>
+                <AiDev/>
                 <Blockchain/>
             </Box>
         </Box>

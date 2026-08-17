@@ -5,6 +5,7 @@ import {
     Typography,
 } from "@mui/material";
 import MobileDevPageAnim from '../src/components/mobileDevPageAnim.js';
+import aiApps from "../src/data/aiApps";
 import { useUserAgent } from 'next-useragent'
 
 
@@ -78,6 +79,9 @@ export default function MobileDevPage() {
                 </Typography>
 
                 <Box sx={grid}>
+                    {aiApps.map((app) => (
+                        <ProjectCard key={app.name} {...app} ai/>
+                    ))}
                     <ProjectCard frameWorks={['React Native','Python','Django']} name={"ALERGO365"} img={"/images/ALERGO365.png"}
                                  url={ua==='android'?'https://play.google.com/store/apps/details?id=app.alergo365&hl=en&gl=US'
                                      :'https://apps.apple.com/ph/app/alergo365/id1530910440'}/>
