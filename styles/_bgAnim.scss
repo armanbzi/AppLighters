@@ -8,7 +8,7 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-.deskBg
+.starsBg
 {
   position: fixed;
   inset: 0;
@@ -304,6 +304,90 @@ canvas.tsparticles-canvas-el {
   }
 }
 
+/* ── AI badge on ProjectCard ───────────────────────────────────────────────
+   A static glass chip at rest — a plain 1px purple edge. On CARD hover a
+   conic-gradient ring (`.pc-ai__ring`) fades in behind the opaque inner face
+   and rotates, so a bright point of light travels around the pill's edge. The
+   ring is hidden and still at rest; the rotation is applied only on hover from
+   the card's own `:hover` in ProjectCard's `sx`. Keyframes live here beside
+   the other background animations so they are declared once for all instances
+   rather than per card. */
+
+.pc-ai {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 1px; /* the ring's thickness — the visible edge at rest */
+  border-radius: 999px;
+  overflow: hidden;
+  isolation: isolate;
+  /* The static edge shown at rest, and what stays visible in the dim part of
+     the ring's sweep so the border never fully disappears. */
+  background: rgba(201, 139, 255, 0.42);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.38), 0 0 0 3px rgba(178, 79, 224, 0.06);
+  transition: box-shadow 0.28s ease;
+}
+
+.pc-ai__ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 260%; /* oversized and square so the corners stay covered while it turns */
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  opacity: 0; /* invisible at rest; the solid edge above shows instead */
+  transition: opacity 0.3s ease;
+  background: conic-gradient(
+    from 0deg,
+    rgba(201, 139, 255, 0) 0deg,
+    rgba(201, 139, 255, 0.18) 55deg,
+    #f1e4ff 130deg,
+    #b24fe0 175deg,
+    rgba(201, 139, 255, 0.18) 260deg,
+    rgba(201, 139, 255, 0) 360deg
+  );
+}
+
+.pc-ai__face {
+  position: relative; /* above the ring */
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  /* Lighter on the right: the label's letter-spacing adds trailing space
+     after the "I", so equal padding reads optically off-centre. */
+  padding: 4px 7px 4px 8px;
+  border-radius: 999px;
+  /* Opaque, or the ring shows through the middle instead of only at the edge. */
+  background: linear-gradient(150deg, rgba(201, 139, 255, 0.22) 0%, rgba(126, 43, 216, 0.18) 100%),
+    #191322;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  color: #f1e4ff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: color 0.28s ease;
+}
+
+.pc-ai__spark {
+  color: #d9a6ff;
+}
+
+@keyframes pcAiRing {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Respect a reduced-motion request: the ring never appears, so hover just
+   recolours the chip rather than spinning. */
+@media (prefers-reduced-motion: reduce) {
+  .pc-ai__ring {
+    display: none;
+  }
+}
+
 
 
 
@@ -535,7 +619,11 @@ canvas.tsparticles-canvas-el {
 
 
 .ccl {
-  position: relative;
+  // Position comes from the sx on the FireRing <Box> (absolute + centred). Do
+  // NOT set `position` here — it collides with that sx at equal specificity, so
+  // whichever stylesheet loads last wins, and the ring's centring silently
+  // breaks when Emotion's insertion order changes. The :before/:after rings
+  // anchor to the sx's absolute box just as well.
   filter: url(#wavy) blur(1px);
 }
 

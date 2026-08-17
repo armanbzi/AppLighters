@@ -86,7 +86,7 @@ export default function WebDevPage() {
                                  url={'https://hemato365.app/'}/>
                     <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"CARDIO365"} img={"/images/CARDIO365.png"}
                                  url={'https://cardio365.app/'}/>
-                    <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"PNEUMO365"} url={"https://www.pneumo365.app/"} img={'/images/PNEUMO365.png'}/>
+                    <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"PNEUMO365"} url={"https://www.pneumo365.app/"} img={'/images/pneumo365.png'}/>
                     <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"ALERGO365"} img={"/images/ALERGO365.png"}
                                  url={'https://www.alergo365.app/'}/>
                     <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"RHP Content Viewer"} img={"/images/RHPLogo.jpeg"}

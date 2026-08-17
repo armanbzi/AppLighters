@@ -1,9 +1,21 @@
+import { useState } from "react";
 import { Box, Typography, Stack } from "@mui/material";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
+import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 
-export default function ProjectCard({ name, img, url, frameWorks = [] }) {
+// Two initials from the name's capitals (ToastAi -> TA), falling back to the
+// first two characters for names that carry none.
+function initialsFor(name) {
+    const caps = (name || "").replace(/[^A-Za-z0-9 ]/g, " ").match(/[A-Z]/g);
+    if (caps && caps.length) return caps.join("").slice(0, 2);
+    return (name || "?").slice(0, 2).toUpperCase();
+}
+
+export default function ProjectCard({ name, img, url, frameWorks = [], ai = false }) {
     const tags = (frameWorks || []).filter(Boolean);
     const isExternal = typeof url === "string" && url.startsWith("http");
+    const [imgFailed, setImgFailed] = useState(false);
+    const showTile = !img || imgFailed;
 
     return (
         <Box
@@ -12,6 +24,7 @@ export default function ProjectCard({ name, img, url, frameWorks = [] }) {
             {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
             sx={{
                 textDecoration: "none",
+                position: "relative",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -48,9 +61,29 @@ export default function ProjectCard({ name, img, url, frameWorks = [] }) {
                     "& .pc-logo": { transform: "scale(1.05)" },
                     "& .pc-cta": { color: "#C98BFF" },
                     "& .pc-cta svg": { transform: "translate(2px,-2px)" },
+                    "& .pc-ai": {
+                        boxShadow:
+                            "0 4px 14px rgba(0,0,0,0.45), 0 0 0 4px rgba(178,79,224,0.16)",
+                    },
+                    "& .pc-ai__face": { color: "#fff" },
+                    // The ring only appears and rotates while the card is hovered;
+                    // the keyframes are defined globally in styles/_bgAnim.scss.
+                    "& .pc-ai__ring": { opacity: 1, animation: "pcAiRing 4.5s linear infinite" },
                 },
             }}
         >
+            {/* Styled in styles/_bgAnim.scss ("AI badge" block). Static at rest;
+                the ring sweep is triggered by the card's :hover in sx below. */}
+            {ai && (
+                <Box className="pc-ai">
+                    <Box component="span" className="pc-ai__ring" aria-hidden="true" />
+                    <Box component="span" className="pc-ai__face">
+                        <AutoAwesomeRoundedIcon className="pc-ai__spark" sx={{ fontSize: 11 }} />
+                        AI
+                    </Box>
+                </Box>
+            )}
+
             <Box
                 className="pc-logo"
                 sx={{
@@ -65,11 +98,34 @@ export default function ProjectCard({ name, img, url, frameWorks = [] }) {
                     bgcolor: "rgba(0,0,0,0.25)",
                 }}
             >
-                <img
-                    src={img}
-                    alt={name}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                />
+                {showTile ? (
+                    <Box
+                        aria-hidden="true"
+                        sx={{
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            background: "linear-gradient(135deg, #C98BFF 0%, #7E2BD8 100%)",
+                            color: "#fff",
+                            fontWeight: 800,
+                            fontSize: 32,
+                            letterSpacing: ".02em",
+                            lineHeight: 1,
+                        }}
+                    >
+                        {initialsFor(name)}
+                    </Box>
+                ) : (
+                    <img
+                        src={img}
+                        alt={name}
+                        loading="lazy"
+                        onError={() => setImgFailed(true)}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                )}
             </Box>
 
             <Typography

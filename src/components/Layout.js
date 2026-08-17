@@ -21,7 +21,7 @@ const navLinks = [
     { label: "Portfolio", href: "/Portfolio" },
     { label: "Mobile", href: "/MobileDevPage" },
     { label: "Web", href: "/WebDevPage" },
-    { label: "Desktop", href: "/DesktopDevPage" },
+    { label: "AI Integrated", href: "/AiDevPage" },
     { label: "Blockchain", href: "/BlockDevPage" },
 ];
 
@@ -109,7 +109,7 @@ export default function Layout({ children, menu, footerCoversBg }) {
                 component="footer"
                 sx={{
                     // WebDevPage opts in (footerCoversBg) so its large squares stay in the hero.
-                    // Default (Desktop/Blockchain/Mobile): footer sits below the fixed animation
+                    // Default (AI/Blockchain/Mobile): footer sits below the fixed animation
                     // so stars/particles/cubes keep running through the footer as before.
                     ...(footerCoversBg ? { position: "relative", zIndex: 2 } : {}),
                     backgroundColor: "#17151d",
@@ -185,7 +185,7 @@ export default function Layout({ children, menu, footerCoversBg }) {
                                     </Box>
                                 </Typography>
                                 <Typography sx={{ color: "rgba(255,255,255,0.6)", fontSize: 14.5, lineHeight: 1.7, mb: 4, maxWidth: 340 }}>
-                                    We craft superior web, mobile, desktop and blockchain applications that deliver real results.
+                                    We craft superior web, mobile, AI-integrated and blockchain applications that deliver real results.
                                 </Typography>
 
                                 <Typography sx={sectionLabelSx}>Get in touch</Typography>

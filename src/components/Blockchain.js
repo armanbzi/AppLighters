@@ -10,14 +10,23 @@ import NextLink from "next/link";
 export default function Blockchain() {
     React.useEffect(() => {
         let anim;
+        let cancelled = false;
         import("lottie-web").then(({ default: lottie }) => {
+            // See AiDev.js — StrictMode-safe guard against an orphaned second SVG.
+            if (cancelled) return;
+            const container = document.querySelector("#BlockchainDev");
+            if (!container) return;
+            container.innerHTML = "";
             anim = lottie.loadAnimation({
-                container: document.querySelector("#BlockchainDev"),
+                container,
                 animationData: BlockchainDev,
-                autoplay: isHover,
+                autoplay: true,
             });
         });
-        return () => anim && anim.destroy();
+        return () => {
+            cancelled = true;
+            if (anim) anim.destroy();
+        };
     }, []);
     const [isHover, setIsHover] = useState('False');
     return (

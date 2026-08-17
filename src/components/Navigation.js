@@ -2,7 +2,51 @@ import {Box, Button, ClickAwayListener, Collapse, Container, IconButton, Link} f
 import NextLink from "next/link";
 import {styled} from "@mui/system";
 import {useContext, useState} from "react";
-import { scroller } from "react-scroll";
+
+// The sticky nav is ~100px tall; offset the target so the form isn't tucked
+// under it. We drive the scroll ourselves with requestAnimationFrame + an
+// easing curve so the duration is tunable (native `behavior: 'smooth'` is not,
+// and felt too fast). During the animation we disable the CSS smooth scrolling
+// from theme.js (html { scroll-behavior: smooth }); otherwise the browser would
+// re-smooth every per-frame scrollTo and the two would fight — that double
+// animation was the original judder.
+const NAV_OFFSET = 90;
+const SCROLL_DURATION = 1300; // ms — a deliberate, unhurried glide
+
+function scrollToEstimate() {
+    if (typeof window === "undefined") return;
+    const el = document.getElementById("Estimate");
+    if (!el) return;
+
+    const startY = window.pageYOffset;
+    const targetY = el.getBoundingClientRect().top + startY - NAV_OFFSET;
+
+    // Honour a reduced-motion preference: jump straight there.
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        window.scrollTo(0, targetY);
+        return;
+    }
+
+    const distance = targetY - startY;
+    const html = document.documentElement;
+    const prevBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
+
+    const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+    let startTime;
+    const step = (now) => {
+        if (startTime === undefined) startTime = now;
+        const t = Math.min((now - startTime) / SCROLL_DURATION, 1);
+        window.scrollTo(0, startY + distance * easeInOutCubic(t));
+        if (t < 1) {
+            requestAnimationFrame(step);
+        } else {
+            html.style.scrollBehavior = prevBehavior; // restore CSS smooth scrolling
+        }
+    };
+    requestAnimationFrame(step);
+}
 
 
 let menus = [
@@ -16,7 +60,7 @@ let menus = [
         title: "WEB", url: "/WebDevPage"
     },
     {
-        title: "DESKTOP", url: "/DesktopDevPage"
+        title: "AI INTEGRATED", url: "/AiDevPage"
     },
     {
         title: "BLOCKCHAIN", url: "/BlockDevPage"
@@ -26,7 +70,11 @@ let menus = [
 const Navigation = ({menu}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     return <Box sx={{
-        overflowX: 'hidden',
+        // No `overflowX: 'hidden'` here. It computes overflow-y to `auto`, and
+        // because this Box has `backdrop-filter` it is the containing block for
+        // the position:fixed mobile menu below — so the clip cut the dropdown
+        // off at the nav's height (only the first item showed). The nav content
+        // fits without it, so nothing overflows horizontally.
         position: "sticky",
         top: 0,
         transition: "top 300ms cubic-bezier(0.4, 0, 0.2, 1) 0m",
@@ -77,13 +125,7 @@ const Navigation = ({menu}) => {
             </Box>
             <Box sx={{marginLeft: 'auto'}}/>
             <Button
-                onClick={function  ()  {
-                    scroller.scrollTo("Estimate", {
-                        duration: 2000,
-                        delay: 0,
-                        smooth: "easeInOutQuart",
-                    });
-                }}
+                onClick={scrollToEstimate}
                 variant="contained" size="large"
                 sx={{width:{xs:100,sm:170,lg:210},
                     height:48, fontSize:13,
@@ -131,7 +173,8 @@ const Navigation = ({menu}) => {
                     <Collapse in={isMenuOpen}
                               sx={{
                                   position: "fixed",
-                                  top: 56,
+                                  // Sit below the 100px nav bar, not overlapping it at 56.
+                                  top: 100,
                                   left: 0,
                                   right: 0,
                                   boxShadow: "rgb(0 0 0 / 35%) 0px 15px 20px -5px",
@@ -141,7 +184,7 @@ const Navigation = ({menu}) => {
                               }}>
                         <Box sx={{
                             p: "25px",
-                            maxHeight: "calc(100vh - 56px)",
+                            maxHeight: "calc(100vh - 100px)",
                             overflow: "auto"
                         }}>
                             <MobileMenu>

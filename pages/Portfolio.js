@@ -3,6 +3,7 @@ import ProjectCard from "../src/components/ProjectCard";
 import {
     Box, Typography
 } from "@mui/material";
+import aiApps from "../src/data/aiApps";
 import { useUserAgent } from 'next-useragent'
 
 
@@ -110,6 +111,9 @@ export default function Portfolio() {
                 </Typography>
 
                 <Box sx={grid}>
+                    {aiApps.map((app) => (
+                        <ProjectCard key={app.name} {...app} ai/>
+                    ))}
                     <ProjectCard frameWorks={['React Native','Python','Django']} name={"ALERGO365"} img={"/images/ALERGO365.png"}
                                  url={ua==='android'?'https://play.google.com/store/apps/details?id=app.alergo365&hl=en&gl=US'
                                      :'https://apps.apple.com/ph/app/alergo365/id1530910440'}/>

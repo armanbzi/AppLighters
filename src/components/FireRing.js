@@ -11,7 +11,10 @@ export default function FireRing() {
                      top: '50%',
                      left: '50%',
                      transform: 'translate(-50%, -50%)',
-                     marginTop:{xs:-7,sm:5,lg:2}
+                     // The headline block is centred at 50%; this margin is exactly how
+                     // far the ring's centre sits away from it. 0 centres the content in
+                     // the ring on phone + tablet (was -7 / 5, which pushed it off).
+                     marginTop:{xs:0,lg:2}
             }}></Box>
             <svg>
                 <filter id="wavy">
