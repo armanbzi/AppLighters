@@ -1,11 +1,10 @@
 import Layout from "../src/components/Layout";
+import ProjectCard from "../src/components/ProjectCard";
 import {
     Box,
-    Stack,
     Typography,
 } from "@mui/material";
 import MobileDevPageAnim from '../src/components/mobileDevPageAnim.js';
-import PrCards from "../src/components/PrCards";
 import { useUserAgent } from 'next-useragent'
 
 
@@ -16,92 +15,93 @@ export default function MobileDevPage() {
     if (typeof window !== 'undefined') {
         ua = useUserAgent(window.navigator.userAgent).os;
     }
+
+    const grid = {
+        display: 'grid',
+        gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)',
+        },
+        gap: {xs:2.5, lg:3.5},
+        maxWidth: 1180,
+        mx: 'auto',
+    };
+
     return (
         <Layout>
-        <Box sx={{height:602}}>
-            <MobileDevPageAnim/>
-        </Box>
-        <Box sx={{position:'relative',
-            height:{xs:2750,sm:2800,lg:1280},
-            backgroundColor: 'hsla(210,4%,90%,.4)',
-        }}>
-            <Box sx={{
-                position:'absolute',
-                left:{xs:30,sm:70,lg:180},
-                top:'120px',
-            }}>
-            <Typography sx={{color:'#983cea',
-                fontSize:{xs:30,sm:40,lg:50} ,
-                lineHeight: 1.12,
-                fontWeight: 'bold',}}>
-                Creating Apps Since 1999
-            </Typography><br/><br/><br/>
-            <Typography sx={{
-                marginTop:{xs:-4,sm:0,lg:0},
-                fontSize: {xs:16,sm:18,lg:20},
-                lineHeight: 1.8,
-                color: 'rgba(29,31,38,.75)',
-                fontFamily: 'Roboto,Arial,Helvetica,sans-serif',
-                width:{xs:380,sm:800,lg:950},
-            }}>
-                Our highly skilled team has successfully developed numerous exceptional iOS and Android mobile apps and services, catering to a user base exceeding 10,000. We continuously strive to deliver the finest mobile app solutions for our clients, significantly enhancing their business operations.
-            </Typography><br/><br/><br/><br/>
+            <Box sx={{minHeight:'100vh', marginTop:'-100px'}}>
+                <MobileDevPageAnim/>
+            </Box>
 
+            <Box sx={{
+                background: 'linear-gradient(180deg, #3a3446 0%, #262130 100%)',
+                pt: {xs:7, lg:11},
+                pb: {xs:8, lg:14},
+                px: {xs:2, sm:4},
+            }}>
+
+                {/* Intro */}
+                <Box sx={{textAlign:'center', maxWidth:840, mx:'auto', mb:{xs:7, lg:10}}}>
+                    <Typography sx={{
+                        color:'#C98BFF',
+                        fontWeight:800,
+                        fontSize:{xs:28, sm:36, lg:44},
+                        lineHeight:1.14,
+                        mb:2.5,
+                    }}>
+                        Creating Apps Since 1999
+                    </Typography>
+                    <Typography sx={{
+                        color:'rgba(255,255,255,.7)',
+                        fontSize:{xs:15, sm:17, lg:18},
+                        lineHeight:1.75,
+                    }}>
+                        Our highly skilled team has successfully developed numerous exceptional iOS and Android
+                        mobile apps and services, catering to a user base exceeding 10,000. We continuously strive
+                        to deliver the finest mobile app solutions for our clients, significantly enhancing their
+                        business operations.
+                    </Typography>
+                </Box>
+
+                {/* Our Mobile Apps */}
                 <Typography sx={{
-                    color:'#983cea',
-                    fontSize: {xs:30,sm:40,lg:50},
-                    lineHeight: 1.12,
-                    fontWeight: 'bold',
+                    color:'#fff',
+                    fontWeight:700,
+                    fontSize:{xs:24, sm:28, lg:32},
+                    textAlign:'center',
+                    letterSpacing:'.02em',
+                    mb:{xs:3.5, lg:5},
                 }}>
                     Our Mobile Apps
-                </Typography><br/><br/><br/><br/>
-                <Stack direction={{xs:"column",sm:"column",lg:"row"}} spacing={0} sx={{marginTop:{xs:-20,sm:-19,lg:-17},marginLeft:{xs:0,sm:12,lg:-7}}}>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['React Native','Python','Django']} name={"ALERGO365"} img={"/images/ALERGO365.png"}
+                </Typography>
+
+                <Box sx={grid}>
+                    <ProjectCard frameWorks={['React Native','Python','Django']} name={"ALERGO365"} img={"/images/ALERGO365.png"}
                                  url={ua==='android'?'https://play.google.com/store/apps/details?id=app.alergo365&hl=en&gl=US'
                                      :'https://apps.apple.com/ph/app/alergo365/id1530910440'}/>
-                    </Box>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['Ionic','','PHP']} name={"iCheers"} img={"/images/iCheers.jpg"}
+                    <ProjectCard frameWorks={['Ionic','','PHP']} name={"iCheers"} img={"/images/iCheers.jpg"}
                                  url={ua==='android'?'https://baixarapk.gratis/en/app/1244283176/icheers-aplicaci%C3%B3n-de-citas'
                                      :'https://apps.apple.com/us/app/icheers-dating-app/id1244283176'}/>
-                    </Box>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['React Native','Python','Django']} name={"PNEUMO365"} img={"/images/pneumo365.png"}
+                    <ProjectCard frameWorks={['React Native','Python','Django']} name={"PNEUMO365"} img={"/images/pneumo365.png"}
                                  url={ua==='android'?'https://play.google.com/store/apps/details?id=app.pneumo365&hl=en&gl=US'
                                      :'https://apps.apple.com/nz/app/pneumo365/id1468647598'}/>
-                    </Box>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['React Native','Python','Django']} name={"CARDIO365"} img={"/images/CARDIO365.png"}
+                    <ProjectCard frameWorks={['React Native','Python','Django']} name={"CARDIO365"} img={"/images/CARDIO365.png"}
                                  url={ua==='android'?'https://play.google.com/store/apps/details?id=hr.apps.n206949985&hl=en&gl=US'
                                      :'https://apps.apple.com/gb/app/cardio365/id1008779129'}/>
-                    </Box>
-
-                </Stack>
-
-
-
-                <Stack direction={{xs:"column",sm:"column",lg:"row"}} spacing={0} sx={{marginLeft:{xs:0,sm:12,lg:-7}}}>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['React Native','Python','Django']} name={"ONCO365"} img={"/images/ONCO365.png"}
-                        url={ua==='android'?'https://play.google.com/store/apps/details?id=hr.apps.n206999954&hl=en&gl=US'
-                            :'https://apps.apple.com/us/app/onco365/id1094718689'}/>
-                    </Box>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['React Native','Python','Django']} name={"HEMATO365"} img={"/images/HEMATO365.png"}
-                        url={ua==='android'?'https://play.google.com/store/apps/details?id=hr.apps.n207027939&hl=en&gl=US'
-                            :'https://apps.apple.com/uy/app/hemato365/id1094674654'}/>
-                    </Box>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['','React Native','']} name={"BeActive"} img={'/images/BeActive.png'}
+                    <ProjectCard frameWorks={['React Native','Python','Django']} name={"ONCO365"} img={"/images/ONCO365.png"}
+                                 url={ua==='android'?'https://play.google.com/store/apps/details?id=hr.apps.n206999954&hl=en&gl=US'
+                                     :'https://apps.apple.com/us/app/onco365/id1094718689'}/>
+                    <ProjectCard frameWorks={['React Native','Python','Django']} name={"HEMATO365"} img={"/images/HEMATO365.png"}
+                                 url={ua==='android'?'https://play.google.com/store/apps/details?id=hr.apps.n207027939&hl=en&gl=US'
+                                     :'https://apps.apple.com/uy/app/hemato365/id1094674654'}/>
+                    <ProjectCard frameWorks={['','React Native','']} name={"BeActive"} img={'/images/BeActive.png'}
                                  url={ua==='android'?'https://play.google.com/store/apps/details?id=com.beactivedpoc&hl=en&gl=US'
                                      :'https://apps.apple.com/us/app/beactive/id1540248728'}/>
-                    </Box>
-                </Stack>
+                </Box>
 
             </Box>
-        </Box>
-
-
-    </Layout>);
+        </Layout>
+    );
 }

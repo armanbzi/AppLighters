@@ -1,7 +1,6 @@
 import Layout from "../src/components/Layout";
 import {
     Box,
-    Stack,
     Typography,
 } from "@mui/material";
 import BlockDevPageAnim from '../src/components/BlcokDevPageAnim';
@@ -12,40 +11,37 @@ import BlockDevPageAnim from '../src/components/BlcokDevPageAnim';
 export default function BlockDevPage() {
     return (
         <Layout>
-            <Box sx={{height:602}}>
+            <Box sx={{height:'100vh', marginTop:'-100px'}}>
                 <BlockDevPageAnim/>
             </Box>
-            <Box sx={{position:'relative',
-                height: {xs:600,sm:650,lg:700},
-                backgroundColor: 'hsla(210,4%,90%,.4)',
-            }}>
-                <Box sx={{
-                    position:'absolute',
-                    left:{xs:50,sm:70,lg:180},
-                    top:'120px',
-                }}>
 
-                    <Typography sx={{color:'#983cea',
-                        fontSize: {xs:24,sm:40,lg:50},
-                        lineHeight: 1.12,
-                        fontWeight: 'bold',
-                        maxWidth:{xs:380,sm:800,lg:900}
+            <Box sx={{
+                background: 'linear-gradient(180deg, #3a3446 0%, #262130 100%)',
+                px: {xs:2, sm:4},
+                py: {xs:9, lg:13},
+                display: 'flex',
+                justifyContent: 'center',
+            }}>
+                <Box sx={{textAlign:'center', maxWidth:760}}>
+                    <Typography sx={{
+                        color:'#C98BFF',
+                        fontWeight:800,
+                        fontSize:{xs:26, sm:34, lg:42},
+                        lineHeight:1.16,
+                        mb:2.5,
                     }}>
                         Our Blockchain apps are not ready YET...
-                    </Typography><br/><br/><br/>
+                    </Typography>
                     <Typography sx={{
-                        marginTop:{xs:-4,sm:0,lg:0},
-                        fontSize: {xs:16,sm:18,lg:20},
-                        lineHeight: 1.8,
-                        color: 'rgba(29,31,38,.75)',
-                        fontFamily: 'Roboto,Arial,Helvetica,sans-serif',
-                        width:{xs:380,sm:800,lg:950},
+                        color:'rgba(255,255,255,.7)',
+                        fontSize:{xs:15, sm:17, lg:19},
+                        lineHeight:1.75,
                     }}>
-                        Our highly skilled team is currently engaged in the development of our first Blockchain apps which will be added to our portfolio as soon as they are ready.
+                        Our highly skilled team is currently engaged in the development of our first Blockchain apps
+                        which will be added to our portfolio as soon as they are ready.
                     </Typography>
                 </Box>
             </Box>
-
-
-        </Layout>);
+        </Layout>
+    );
 }

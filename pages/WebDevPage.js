@@ -1,103 +1,101 @@
 import Layout from "../src/components/Layout";
+import ProjectCard from "../src/components/ProjectCard";
 import {
     Box,
-    Stack,
     Typography,
 } from "@mui/material";
 import WebDevPageAnim from '../src/components/WebDevPageAnim.js';
-import PrCards from '/src/components/PrCards';
 
 
 
 
 export default function WebDevPage() {
+
+    const grid = {
+        display: 'grid',
+        gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)',
+        },
+        gap: {xs:2.5, lg:3.5},
+        maxWidth: 1180,
+        mx: 'auto',
+        position: 'relative',
+        zIndex: 2,
+    };
+
     return (
-        <Layout>
-        <Box sx={{height:602}}>
-            <WebDevPageAnim/>
-        </Box>
-        <Box sx={{position:'relative',
-            height: {xs:3050,sm:3100,lg:1280},
-            backgroundColor: 'hsla(210,4%,90%,.4)',
-        }}>
+        <Layout footerCoversBg>
+            <Box sx={{minHeight:'100vh', marginTop:'-100px', position:'relative', background:'#460A58'}}>
+                <WebDevPageAnim/>
+            </Box>
+
             <Box sx={{
-                position:'absolute',
-                left:{xs:30,sm:70,lg:180},
-                top:'120px',
+                background: 'linear-gradient(180deg, #3a3446 0%, #262130 100%)',
+                pt: {xs:7, lg:11},
+                pb: {xs:8, lg:14},
+                px: {xs:2, sm:4},
+                position: 'relative',
+                zIndex: 2,
             }}>
 
+                {/* Intro */}
+                <Box sx={{textAlign:'center', maxWidth:840, mx:'auto', mb:{xs:7, lg:10}, position:'relative', zIndex:2}}>
+                    <Typography sx={{
+                        color:'#C98BFF',
+                        fontWeight:800,
+                        fontSize:{xs:28, sm:36, lg:44},
+                        lineHeight:1.14,
+                        mb:2.5,
+                    }}>
+                        We Create Amazing Web Apps
+                    </Typography>
+                    <Typography sx={{
+                        color:'rgba(255,255,255,.7)',
+                        fontSize:{xs:15, sm:17, lg:18},
+                        lineHeight:1.75,
+                    }}>
+                        Our proficient team has a remarkable track record of creating exceptional web apps that
+                        have garnered widespread recognition. With a diverse portfolio of successful projects, our
+                        web apps have consistently delivered outstanding results.
+                    </Typography>
+                </Box>
 
-
-                <Typography sx={{color:'#983cea',
-                    fontSize: {xs:30,sm:40,lg:50},
-                    lineHeight: 1.12,
-                    fontWeight: 'bold',
-                    maxWidth:{xs:400,sm:500,lg:800}
-                }}>
-                    We Create Amazing Web Apps
-                </Typography><br/><br/><br/>
+                {/* Our Web Apps */}
                 <Typography sx={{
-                    marginTop:{xs:-4,sm:0,lg:0},
-                    fontSize: {xs:16,sm:18,lg:20},
-                    lineHeight: 1.8,
-                    color: 'rgba(29,31,38,.75)',
-                    fontFamily: 'Roboto,Arial,Helvetica,sans-serif',
-                    width:{xs:400,sm:800,lg:950},
-                }}>
-                    Our proficient team has a remarkable track record of creating exceptional web apps that have garnered widespread recognition. With a diverse portfolio of successful projects, our web apps have consistently delivered outstanding results.
-                </Typography><br/><br/><br/><br/>
-
-                <Typography sx={{
-                    color:'#983cea',
-                    fontSize: {xs:30,sm:40,lg:50},
-                    lineHeight: 1.12,
-                    fontWeight: 'bold',
+                    color:'#fff',
+                    fontWeight:700,
+                    fontSize:{xs:24, sm:28, lg:32},
+                    textAlign:'center',
+                    letterSpacing:'.02em',
+                    mb:{xs:3.5, lg:5},
+                    position:'relative',
+                    zIndex:2,
                 }}>
                     Our Web Apps
-                </Typography><br/><br/><br/><br/>
+                </Typography>
 
-                <Stack direction={{xs:"column",sm:"column",lg:"row"}} spacing={0} sx={{marginTop:{xs:-20,sm:-19,lg:-17},marginLeft:{xs:0,sm:12,lg:-7}}}>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['NextJs','MUI','React']} name={"AppLighters"} img={'/images/APP_Lighters.png'}
+                <Box sx={grid}>
+                    <ProjectCard frameWorks={['NextJs','MUI','React']} name={"AppLighters"} img={'/images/APP_Lighters.png'}
                                  url={'/'}/>
-                    </Box>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['ReactJs','Python','Django']} name={"ONCO365"} img={"/images/ONCO365.png"}
-                        url={'https://onco365.app/'}/>
-                    </Box>
-
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['ReactJs','Python','Django']} name={"HEMATO365"} img={"/images/HEMATO365.png"}
-                        url={'https://hemato365.app/'}/>
-                    </Box>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['ReactJs','Python','Django']} name={"CARDIO365"} img={"/images/CARDIO365.png"}
-                        url={'https://cardio365.app/'}/>
-                    </Box>
-                </Stack>
-
-
-                <Stack direction={{xs:"column",sm:"column",lg:"row"}} spacing={0} sx={{marginLeft:{xs:0,sm:12,lg:-7}}}>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['ReactJs','Python','Django']} name={"PNEUMO365"} url={"https://www.pneumo365.app/"} img={'/images/PNEUMO365.png'}/>
-                    </Box>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['ReactJs','Python','Django']} name={"ALERGO365"} img={"/images/ALERGO365.png"}
+                    <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"ONCO365"} img={"/images/ONCO365.png"}
+                                 url={'https://onco365.app/'}/>
+                    <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"HEMATO365"} img={"/images/HEMATO365.png"}
+                                 url={'https://hemato365.app/'}/>
+                    <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"CARDIO365"} img={"/images/CARDIO365.png"}
+                                 url={'https://cardio365.app/'}/>
+                    <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"PNEUMO365"} url={"https://www.pneumo365.app/"} img={'/images/PNEUMO365.png'}/>
+                    <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"ALERGO365"} img={"/images/ALERGO365.png"}
                                  url={'https://www.alergo365.app/'}/>
-                    </Box>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['ReactJs','Python','Django']} name={"RHP Content Viewer"} img={"/images/RHPLogo.jpeg"}
+                    <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"RHP Content Viewer"} img={"/images/RHPLogo.jpeg"}
                                  url={'https://rhpcontentviewer.com/'}/>
-                    </Box>
-                    <Box sx={{width:220,height:300}}>
-                        <PrCards frameWorks={['WordPress','CSS','MySQL']} name={"Oliynyk Fit"} img={"/images/Oliynyk_logoo.png"}
+                    <ProjectCard frameWorks={['WordPress','CSS','MySQL']} name={"Oliynyk Fit"} img={"/images/Oliynyk_logoo.png"}
                                  url={'https://oliynyk.fit/'}/>
-                    </Box>
-                </Stack>
+                </Box>
 
             </Box>
-        </Box>
-
-
-    </Layout>);
+        </Layout>
+    );
 }

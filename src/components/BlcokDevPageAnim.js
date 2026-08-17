@@ -10,11 +10,12 @@ export default function BlockDevPageAnim() {
             background: 'radial-gradient(ellipse at bottom, #460A58 0%, #090a0f 100%)',
             overflow: 'hidden',
             position:'relative',}}>
-            <Particles style={{
+            <Particles id="bc-particles" style={{
                 position: 'absolute',
                 width: '100%',
                 height: '100%',
                 background: '#34155E',
+                pointerEvents: 'none',
             }} params={{
                 particles: {
                     "number": {
@@ -80,7 +81,7 @@ export default function BlockDevPageAnim() {
                     }
                 },
                 "interactivity": {
-                    "detect_on": "canvas",
+                    "detect_on": "window",
                     "events": {
                         "onhover": {
                             "enable": true,

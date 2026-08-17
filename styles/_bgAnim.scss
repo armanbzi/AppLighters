@@ -3,16 +3,28 @@
 .hero {
   background-color: #460A58;
   position: relative;
-  height: 600px;
+  min-height: 100vh;
   overflow: hidden;
   font-family: 'Montserrat', sans-serif;
 }
 
 .deskBg
 {
-  height: 100%;
-  background: radial-gradient(ellipse at bottom, #460A58 0%, #090a0f 100%);
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
   overflow: hidden;
+}
+
+// Blockchain particles detect the mouse on `window`, so the canvas itself does
+// not need to capture pointer events. Making it click-through keeps the whole
+// footer (form, links, text) usable while the particles stay interactive everywhere.
+#bc-particles,
+#bc-particles canvas,
+.tsparticles-canvas-el,
+canvas.tsparticles-canvas-el {
+  pointer-events: none !important;
 }
 
 .hero__title {
@@ -23,9 +35,15 @@
   height: 731px;
   padding-left: 12.5%;
   font-size: 72px;
-  line-height: 1.08;
-  z-index: 1;
-  font-weight: bold;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  z-index: 2;
+  font-weight: 800;
+  background: linear-gradient(118deg, #ffffff 0%, #f1e4ff 42%, #C98BFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 6px 24px rgba(0, 0, 0, 0.45));
 }
 
 .cube {
@@ -99,12 +117,11 @@
 
 
 .area{
-  background: #460A58;
-  background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
-  width: 100%;
-  height:600px;
-
-
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
 }
 
 .gerd{
