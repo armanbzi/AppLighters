@@ -19,7 +19,7 @@ export default function WebDevPageAnim() {
                     <li></li>
                 </ul>
             </Box>
-            <Box className="hero__title" sx={{fontSize:{xs:54 ,sx:62 ,lg: 72}}}>We Create Amazing Web Apps</Box>
+            <Box className="hero__title" sx={{width:{xs:'90%', lg:'63%'}, fontSize:{xs:'11vw', sm:60, lg:72}}}>We Design Fast, Modern Web Apps</Box>
         </>
     );
 }

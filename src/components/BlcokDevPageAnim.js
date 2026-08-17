@@ -123,7 +123,7 @@ export default function BlockDevPageAnim() {
             }
             }/>
             <Box className="hero__title"
-                 sx={{height:250,fontSize:{xs:46,sx:62 ,lg: 62}}}>We Craft Exceptional Blockchain Solutions for Every Platform</Box>
+                 sx={{height:250, width:{xs:'90%', lg:'63%'}, fontSize:{xs:'7.5vw', sm:46, lg:62}}}>We Craft Exceptional Blockchain Solutions for Every Platform</Box>
 
 
         </div>
