@@ -2,7 +2,22 @@ import {Box, Button, ClickAwayListener, Collapse, Container, IconButton, Link} f
 import NextLink from "next/link";
 import {styled} from "@mui/system";
 import {useContext, useState} from "react";
-import { scroller } from "react-scroll";
+
+// The sticky nav is ~100px tall; offset the target so the form isn't tucked
+// under it. Uses native smooth scrolling (html { scroll-behavior: smooth } in
+// theme.js) — a single scrollTo the browser animates on the compositor. The
+// old react-scroll animation drove scrollTop per frame, and with CSS smooth
+// scrolling on, every one of those frames was itself smooth-animated by the
+// browser, so the two fought and the scroll juddered.
+const NAV_OFFSET = 90;
+
+function scrollToEstimate() {
+    if (typeof window === "undefined") return;
+    const el = document.getElementById("Estimate");
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.pageYOffset - NAV_OFFSET;
+    window.scrollTo({ top, behavior: "smooth" });
+}
 
 
 let menus = [
@@ -77,13 +92,7 @@ const Navigation = ({menu}) => {
             </Box>
             <Box sx={{marginLeft: 'auto'}}/>
             <Button
-                onClick={function  ()  {
-                    scroller.scrollTo("Estimate", {
-                        duration: 2000,
-                        delay: 0,
-                        smooth: "easeInOutQuart",
-                    });
-                }}
+                onClick={scrollToEstimate}
                 variant="contained" size="large"
                 sx={{width:{xs:100,sm:170,lg:210},
                     height:48, fontSize:13,
