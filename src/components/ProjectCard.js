@@ -62,53 +62,24 @@ export default function ProjectCard({ name, img, url, frameWorks = [], ai = fals
                     "& .pc-cta": { color: "#C98BFF" },
                     "& .pc-cta svg": { transform: "translate(2px,-2px)" },
                     "& .pc-ai": {
-                        borderColor: "rgba(201,139,255,0.72)",
                         color: "#fff",
+                        borderColor: "rgba(201,139,255,0.7)",
                         boxShadow:
-                            "inset 0 1px 0 rgba(255,255,255,0.22), 0 4px 14px rgba(0,0,0,0.42), 0 0 0 4px rgba(178,79,224,0.14)",
+                            "inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 14px rgba(0,0,0,0.45), 0 0 0 4px rgba(178,79,224,0.16)",
                     },
+                    // The sheen only sweeps while the card is hovered; the keyframes
+                    // are defined globally in styles/_bgAnim.scss.
+                    "& .pc-ai__sheen": { animation: "pcAiSheen 3.4s ease-in-out infinite" },
                 },
             }}
         >
+            {/* Styled in styles/_bgAnim.scss ("AI badge" block). Static at rest;
+                the sheen sweep is triggered by the card's :hover in sx below. */}
             {ai && (
-                <Box
-                    className="pc-ai"
-                    sx={{
-                        position: "absolute",
-                        top: 11,
-                        right: 11,
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "5px",
-                        // Right padding is lighter than left: the label's letter-spacing
-                        // adds trailing space after the "I", so equal padding reads
-                        // optically off-centre.
-                        pl: "8px",
-                        pr: "7px",
-                        py: "5px",
-                        borderRadius: "999px",
-                        // A tinted glass chip: purple wash over a dark base so the badge
-                        // holds its own contrast on both a pale logo and a dark card.
-                        background:
-                            "linear-gradient(150deg, rgba(201,139,255,0.30) 0%, rgba(126,43,216,0.20) 55%, rgba(126,43,216,0.10) 100%), rgba(18,14,28,0.55)",
-                        border: "1px solid rgba(201,139,255,0.38)",
-                        // Inset highlight for the lit top edge, then lift, then a faint
-                        // purple halo so the chip separates from the card border.
-                        boxShadow:
-                            "inset 0 1px 0 rgba(255,255,255,0.16), 0 2px 10px rgba(0,0,0,0.38), 0 0 0 3px rgba(178,79,224,0.06)",
-                        backdropFilter: "blur(6px)",
-                        WebkitBackdropFilter: "blur(6px)",
-                        color: "#F1E4FF",
-                        fontSize: 10,
-                        fontWeight: 800,
-                        letterSpacing: ".14em",
-                        lineHeight: 1,
-                        textTransform: "uppercase",
-                        transition: "border-color .28s ease, box-shadow .28s ease, color .28s ease",
-                    }}
-                >
-                    <AutoAwesomeRoundedIcon sx={{ fontSize: 11, color: "#D9A6FF" }} />
+                <Box className="pc-ai">
+                    <AutoAwesomeRoundedIcon className="pc-ai__spark" sx={{ fontSize: 11 }} />
                     AI
+                    <Box component="span" className="pc-ai__sheen" aria-hidden="true" />
                 </Box>
             )}
 
