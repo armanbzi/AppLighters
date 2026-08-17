@@ -62,24 +62,25 @@ export default function ProjectCard({ name, img, url, frameWorks = [], ai = fals
                     "& .pc-cta": { color: "#C98BFF" },
                     "& .pc-cta svg": { transform: "translate(2px,-2px)" },
                     "& .pc-ai": {
-                        color: "#fff",
-                        borderColor: "rgba(201,139,255,0.7)",
                         boxShadow:
-                            "inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 14px rgba(0,0,0,0.45), 0 0 0 4px rgba(178,79,224,0.16)",
+                            "0 4px 14px rgba(0,0,0,0.45), 0 0 0 4px rgba(178,79,224,0.16)",
                     },
-                    // The sheen only sweeps while the card is hovered; the keyframes
-                    // are defined globally in styles/_bgAnim.scss.
-                    "& .pc-ai__sheen": { animation: "pcAiSheen 3.4s ease-in-out infinite" },
+                    "& .pc-ai__face": { color: "#fff" },
+                    // The ring only appears and rotates while the card is hovered;
+                    // the keyframes are defined globally in styles/_bgAnim.scss.
+                    "& .pc-ai__ring": { opacity: 1, animation: "pcAiRing 4.5s linear infinite" },
                 },
             }}
         >
             {/* Styled in styles/_bgAnim.scss ("AI badge" block). Static at rest;
-                the sheen sweep is triggered by the card's :hover in sx below. */}
+                the ring sweep is triggered by the card's :hover in sx below. */}
             {ai && (
                 <Box className="pc-ai">
-                    <AutoAwesomeRoundedIcon className="pc-ai__spark" sx={{ fontSize: 11 }} />
-                    AI
-                    <Box component="span" className="pc-ai__sheen" aria-hidden="true" />
+                    <Box component="span" className="pc-ai__ring" aria-hidden="true" />
+                    <Box component="span" className="pc-ai__face">
+                        <AutoAwesomeRoundedIcon className="pc-ai__spark" sx={{ fontSize: 11 }} />
+                        AI
+                    </Box>
                 </Box>
             )}
 

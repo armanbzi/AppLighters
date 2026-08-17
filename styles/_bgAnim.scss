@@ -305,69 +305,85 @@ canvas.tsparticles-canvas-el {
 }
 
 /* ── AI badge on ProjectCard ───────────────────────────────────────────────
-   A static glass chip at rest. On CARD hover a diagonal glint sweeps across
-   it (`.pc-ai__sheen`), triggered from the card's own `:hover` in
-   ProjectCard's `sx`. The sheen sits off-screen-left at rest, so the badge
-   is completely still until you point at the card. Keyframes live here beside
+   A static glass chip at rest — a plain 1px purple edge. On CARD hover a
+   conic-gradient ring (`.pc-ai__ring`) fades in behind the opaque inner face
+   and rotates, so a bright point of light travels around the pill's edge. The
+   ring is hidden and still at rest; the rotation is applied only on hover from
+   the card's own `:hover` in ProjectCard's `sx`. Keyframes live here beside
    the other background animations so they are declared once for all instances
    rather than per card. */
 
 .pc-ai {
   position: absolute;
-  top: 11px;
-  right: 11px;
+  top: 10px;
+  right: 10px;
+  padding: 1px; /* the ring's thickness — the visible edge at rest */
+  border-radius: 999px;
+  overflow: hidden;
+  isolation: isolate;
+  /* The static edge shown at rest, and what stays visible in the dim part of
+     the ring's sweep so the border never fully disappears. */
+  background: rgba(201, 139, 255, 0.42);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.38), 0 0 0 3px rgba(178, 79, 224, 0.06);
+  transition: box-shadow 0.28s ease;
+}
+
+.pc-ai__ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 260%; /* oversized and square so the corners stay covered while it turns */
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  opacity: 0; /* invisible at rest; the solid edge above shows instead */
+  transition: opacity 0.3s ease;
+  background: conic-gradient(
+    from 0deg,
+    rgba(201, 139, 255, 0) 0deg,
+    rgba(201, 139, 255, 0.18) 55deg,
+    #f1e4ff 130deg,
+    #b24fe0 175deg,
+    rgba(201, 139, 255, 0.18) 260deg,
+    rgba(201, 139, 255, 0) 360deg
+  );
+}
+
+.pc-ai__face {
+  position: relative; /* above the ring */
   display: inline-flex;
   align-items: center;
   gap: 5px;
   /* Lighter on the right: the label's letter-spacing adds trailing space
      after the "I", so equal padding reads optically off-centre. */
-  padding: 5px 7px 5px 8px;
+  padding: 4px 7px 4px 8px;
   border-radius: 999px;
-  overflow: hidden; /* clips the sheen to the pill */
-  background: linear-gradient(150deg, rgba(201, 139, 255, 0.24) 0%, rgba(126, 43, 216, 0.18) 100%),
-    rgba(20, 15, 28, 0.72);
-  border: 1px solid rgba(201, 139, 255, 0.42);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 2px 10px rgba(0, 0, 0, 0.38);
+  /* Opaque, or the ring shows through the middle instead of only at the edge. */
+  background: linear-gradient(150deg, rgba(201, 139, 255, 0.22) 0%, rgba(126, 43, 216, 0.18) 100%),
+    #191322;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
   color: #f1e4ff;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.14em;
   line-height: 1;
   text-transform: uppercase;
-  transition: box-shadow 0.28s ease, border-color 0.28s ease, color 0.28s ease;
+  transition: color 0.28s ease;
 }
 
 .pc-ai__spark {
   color: #d9a6ff;
 }
 
-.pc-ai__sheen {
-  position: absolute;
-  top: 0;
-  left: -60%; /* parked off the left edge, invisible at rest */
-  width: 45%;
-  height: 100%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-  transform: skewX(-18deg);
-  pointer-events: none;
-}
-
-@keyframes pcAiSheen {
-  0% {
-    left: -60%;
-  }
-  /* sweep across in the first third, then rest off-screen-right until the
-     next loop — a glint every few seconds rather than a constant strobe. */
-  35%,
-  100% {
-    left: 130%;
+@keyframes pcAiRing {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
-/* Respect a reduced-motion request: no sweep, and the glint stays hidden even
-   though the hover rule still applies its animation. */
+/* Respect a reduced-motion request: the ring never appears, so hover just
+   recolours the chip rather than spinning. */
 @media (prefers-reduced-motion: reduce) {
-  .pc-ai__sheen {
+  .pc-ai__ring {
     display: none;
   }
 }
