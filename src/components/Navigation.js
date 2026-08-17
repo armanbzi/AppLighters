@@ -70,7 +70,11 @@ let menus = [
 const Navigation = ({menu}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     return <Box sx={{
-        overflowX: 'hidden',
+        // No `overflowX: 'hidden'` here. It computes overflow-y to `auto`, and
+        // because this Box has `backdrop-filter` it is the containing block for
+        // the position:fixed mobile menu below — so the clip cut the dropdown
+        // off at the nav's height (only the first item showed). The nav content
+        // fits without it, so nothing overflows horizontally.
         position: "sticky",
         top: 0,
         transition: "top 300ms cubic-bezier(0.4, 0, 0.2, 1) 0m",
@@ -169,7 +173,8 @@ const Navigation = ({menu}) => {
                     <Collapse in={isMenuOpen}
                               sx={{
                                   position: "fixed",
-                                  top: 56,
+                                  // Sit below the 100px nav bar, not overlapping it at 56.
+                                  top: 100,
                                   left: 0,
                                   right: 0,
                                   boxShadow: "rgb(0 0 0 / 35%) 0px 15px 20px -5px",
@@ -179,7 +184,7 @@ const Navigation = ({menu}) => {
                               }}>
                         <Box sx={{
                             p: "25px",
-                            maxHeight: "calc(100vh - 56px)",
+                            maxHeight: "calc(100vh - 100px)",
                             overflow: "auto"
                         }}>
                             <MobileMenu>
