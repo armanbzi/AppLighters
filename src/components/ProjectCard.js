@@ -61,33 +61,53 @@ export default function ProjectCard({ name, img, url, frameWorks = [], ai = fals
                     "& .pc-logo": { transform: "scale(1.05)" },
                     "& .pc-cta": { color: "#C98BFF" },
                     "& .pc-cta svg": { transform: "translate(2px,-2px)" },
+                    "& .pc-ai": {
+                        borderColor: "rgba(201,139,255,0.72)",
+                        color: "#fff",
+                        boxShadow:
+                            "inset 0 1px 0 rgba(255,255,255,0.22), 0 4px 14px rgba(0,0,0,0.42), 0 0 0 4px rgba(178,79,224,0.14)",
+                    },
                 },
             }}
         >
             {ai && (
                 <Box
+                    className="pc-ai"
                     sx={{
                         position: "absolute",
-                        top: 12,
-                        right: 12,
-                        display: "flex",
+                        top: 11,
+                        right: 11,
+                        display: "inline-flex",
                         alignItems: "center",
-                        gap: "4px",
-                        px: 0.9,
-                        py: 0.4,
+                        gap: "5px",
+                        // Right padding is lighter than left: the label's letter-spacing
+                        // adds trailing space after the "I", so equal padding reads
+                        // optically off-centre.
+                        pl: "8px",
+                        pr: "7px",
+                        py: "5px",
                         borderRadius: "999px",
+                        // A tinted glass chip: purple wash over a dark base so the badge
+                        // holds its own contrast on both a pale logo and a dark card.
                         background:
-                            "linear-gradient(135deg, rgba(201,139,255,0.22) 0%, rgba(126,43,216,0.32) 100%)",
-                        border: "1px solid rgba(201,139,255,0.45)",
-                        backdropFilter: "blur(4px)",
-                        color: "#E9D4FF",
-                        fontSize: 11,
-                        fontWeight: 700,
-                        letterSpacing: ".08em",
+                            "linear-gradient(150deg, rgba(201,139,255,0.30) 0%, rgba(126,43,216,0.20) 55%, rgba(126,43,216,0.10) 100%), rgba(18,14,28,0.55)",
+                        border: "1px solid rgba(201,139,255,0.38)",
+                        // Inset highlight for the lit top edge, then lift, then a faint
+                        // purple halo so the chip separates from the card border.
+                        boxShadow:
+                            "inset 0 1px 0 rgba(255,255,255,0.16), 0 2px 10px rgba(0,0,0,0.38), 0 0 0 3px rgba(178,79,224,0.06)",
+                        backdropFilter: "blur(6px)",
+                        WebkitBackdropFilter: "blur(6px)",
+                        color: "#F1E4FF",
+                        fontSize: 10,
+                        fontWeight: 800,
+                        letterSpacing: ".14em",
                         lineHeight: 1,
+                        textTransform: "uppercase",
+                        transition: "border-color .28s ease, box-shadow .28s ease, color .28s ease",
                     }}
                 >
-                    <AutoAwesomeRoundedIcon sx={{ fontSize: 12 }} />
+                    <AutoAwesomeRoundedIcon sx={{ fontSize: 11, color: "#D9A6FF" }} />
                     AI
                 </Box>
             )}
