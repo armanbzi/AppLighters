@@ -2,6 +2,7 @@ import {Box, Button, ClickAwayListener, Collapse, Container, IconButton, Link} f
 import NextLink from "next/link";
 import {styled} from "@mui/system";
 import {useContext, useState} from "react";
+import LogoMark from "./LogoMark";
 
 // The sticky nav is ~100px tall; offset the target so the form isn't tucked
 // under it. We drive the scroll ourselves with requestAnimationFrame + an
@@ -89,6 +90,7 @@ const Navigation = ({menu}) => {
                 <Box sx={{m: 0, mr: "20px", display: "inline-flex", alignItems: "center",
                     fontWeight: 800, fontSize: {xs: 21, sm: 25}, letterSpacing: "0.015em", lineHeight: 1,
                     transition: "opacity .2s ease", ":hover": {opacity: 0.85}}}>
+                    <LogoMark height={46} glow style={{marginRight: 3}}/>
                     <Box component="span" sx={{color: "#fff"}}>APP</Box>
                     <Box component="span" sx={{
                         ml: "3px",

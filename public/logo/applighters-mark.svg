@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -3 124 166" width="124" height="166" role="img" aria-label="AppLighters">
+  <defs>
+    <linearGradient id="alPurple" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D7A6FF"/><stop offset="1" stop-color="#7E2BD8"/></linearGradient>
+    <linearGradient id="alDeep" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9B47E0"/><stop offset="1" stop-color="#5C18B0"/></linearGradient>
+    <linearGradient id="alBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F5ECFC"/><stop offset="1" stop-color="#E3D0F4"/></linearGradient>
+    <linearGradient id="alFlame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDF4FF"/><stop offset=".24" stop-color="#EBC2FF"/><stop offset=".52" stop-color="#C15BF3"/><stop offset=".76" stop-color="#BE08FF"/><stop offset="1" stop-color="#7C1BCE"/></linearGradient>
+    <linearGradient id="alCore" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".45" stop-color="#F6E7FF"/><stop offset="1" stop-color="#DDA7FF"/></linearGradient>
+  </defs>
+  <!-- rocket tilted ~22° right so the nose leans into the wordmark -->
+  <g transform="rotate(22 60 81.5)">
+    <path d="M53 107 C 49 120, 42 126, 47 136 C 50 143, 56 148, 60 155 C 64 148, 70 143, 73 136 C 78 126, 71 120, 67 107 Z" fill="url(#alFlame)"/>
+    <path d="M53 107 C 49 120, 42 126, 47 136 C 50 143, 56 148, 60 155 C 64 148, 70 143, 73 136 C 78 126, 71 120, 67 107 Z" fill="url(#alCore)" transform="translate(60 130) scale(0.52) translate(-60 -130)"/>
+    <path d="M43 82 L27 108 L43 100 Z" fill="url(#alDeep)"/>
+    <path d="M77 82 L93 108 L77 100 Z" fill="url(#alDeep)"/>
+    <path d="M51 99 L69 99 L66 110 L54 110 Z" fill="url(#alDeep)"/>
+    <rect x="41" y="40" width="38" height="62" rx="11" fill="url(#alBody)"/>
+    <path d="M60 8 C 69 17, 76 28, 76 44 L 44 44 C 44 28, 51 17, 60 8 Z" fill="url(#alPurple)"/>
+    <rect x="41" y="45" width="38" height="4.2" fill="#E7D6F8"/>
+    <rect x="49.5" y="61.5" width="9" height="9" rx="2.6" fill="#7E2BD8"/>
+    <rect x="61.5" y="61.5" width="9" height="9" rx="2.6" fill="#7E2BD8"/>
+    <rect x="49.5" y="73.5" width="9" height="9" rx="2.6" fill="#9B47E0"/>
+    <rect x="61.5" y="73.5" width="9" height="9" rx="2.6" fill="#9B47E0"/>
+  </g>
+</svg>
