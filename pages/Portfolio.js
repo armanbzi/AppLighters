@@ -88,7 +88,7 @@ export default function Portfolio() {
                 </Typography>
 
                 <Box sx={grid}>
-                    <ProjectCard frameWorks={['NextJs','MUI','React']} name={"AppLighters"} img={'/images/APP_Lighters.png'}
+                    <ProjectCard frameWorks={['NextJs','MUI','React']} name={"AppLighters"} img={'/images/applighters-app.png'}
                                  url={'/'}/>
                     <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"ONCO365"} img={"/images/ONCO365.png"}
                                  url={'https://onco365.app/'}/>
