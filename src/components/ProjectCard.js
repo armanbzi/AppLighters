@@ -11,7 +11,7 @@ function initialsFor(name) {
     return (name || "?").slice(0, 2).toUpperCase();
 }
 
-export default function ProjectCard({ name, img, url, frameWorks = [], ai = false }) {
+export default function ProjectCard({ name, img, url, frameWorks = [], ai = false, logo = null }) {
     const tags = (frameWorks || []).filter(Boolean);
     const isExternal = typeof url === "string" && url.startsWith("http");
     const [imgFailed, setImgFailed] = useState(false);
@@ -20,6 +20,7 @@ export default function ProjectCard({ name, img, url, frameWorks = [], ai = fals
     return (
         <Box
             component="a"
+            className="pc-card"
             href={url || "/"}
             {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
             sx={{
@@ -98,7 +99,9 @@ export default function ProjectCard({ name, img, url, frameWorks = [], ai = fals
                     bgcolor: "rgba(0,0,0,0.25)",
                 }}
             >
-                {showTile ? (
+                {logo ? (
+                    logo
+                ) : showTile ? (
                     <Box
                         aria-hidden="true"
                         sx={{
