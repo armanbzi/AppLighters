@@ -1,5 +1,6 @@
 import Layout from "../src/components/Layout";
 import ProjectCard from "../src/components/ProjectCard";
+import AppRocketIcon from "../src/components/AppRocketIcon";
 import {
     Box, Typography
 } from "@mui/material";
@@ -88,8 +89,8 @@ export default function Portfolio() {
                 </Typography>
 
                 <Box sx={grid}>
-                    <ProjectCard frameWorks={['NextJs','MUI','React']} name={"AppLighters"} img={'/images/APP_Lighters.png'}
-                                 url={'/'}/>
+                    <ProjectCard frameWorks={['NextJs','MUI','React']} name={"AppLighters"} img={'/images/applighters-app.png'}
+                                 logo={<AppRocketIcon/>} url={'/'}/>
                     <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"ONCO365"} img={"/images/ONCO365.png"}
                                  url={'https://onco365.app/'}/>
                     <ProjectCard frameWorks={['ReactJs','Python','Django']} name={"HEMATO365"} img={"/images/HEMATO365.png"}
