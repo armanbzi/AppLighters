@@ -2,6 +2,7 @@ import Navigation from "./Navigation";
 import { Box, Button, Link, Stack, Typography } from "@mui/material";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import NextLink from "next/link";
+import LogoMark from "./LogoMark";
 import Facebook from "../../public/icons/socials/facebook.svg";
 import Instagram from "../../public/icons/socials/instagram.svg";
 import Linkedin from "../../public/icons/socials/linkedin.svg";
@@ -169,21 +170,24 @@ export default function Layout({ children, menu, footerCoversBg }) {
 
                             {/* Brand + contact */}
                             <Box>
-                                <Typography sx={{ fontWeight: 800, fontSize: 24, letterSpacing: "0.01em", lineHeight: 1, mb: 2 }}>
-                                    <Box component="span" sx={{ color: "#fff" }}>APP</Box>
-                                    <Box
-                                        component="span"
-                                        sx={{
-                                            ml: "3px",
-                                            background: "linear-gradient(135deg, #C98BFF 0%, #7E2BD8 100%)",
-                                            WebkitBackgroundClip: "text",
-                                            WebkitTextFillColor: "transparent",
-                                            backgroundClip: "text",
-                                        }}
-                                    >
-                                        LIGHTERS
-                                    </Box>
-                                </Typography>
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 2 }}>
+                                    <LogoMark height={52} glow />
+                                    <Typography sx={{ fontWeight: 800, fontSize: 24, letterSpacing: "0.01em", lineHeight: 1 }}>
+                                        <Box component="span" sx={{ color: "#fff" }}>APP</Box>
+                                        <Box
+                                            component="span"
+                                            sx={{
+                                                ml: "3px",
+                                                background: "linear-gradient(135deg, #C98BFF 0%, #7E2BD8 100%)",
+                                                WebkitBackgroundClip: "text",
+                                                WebkitTextFillColor: "transparent",
+                                                backgroundClip: "text",
+                                            }}
+                                        >
+                                            LIGHTERS
+                                        </Box>
+                                    </Typography>
+                                </Box>
                                 <Typography sx={{ color: "rgba(255,255,255,0.6)", fontSize: 14.5, lineHeight: 1.7, mb: 4, maxWidth: 340 }}>
                                     We craft superior web, mobile, AI-integrated and blockchain applications that deliver real results.
                                 </Typography>
