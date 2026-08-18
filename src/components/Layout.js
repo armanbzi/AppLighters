@@ -171,7 +171,7 @@ export default function Layout({ children, menu, footerCoversBg }) {
                             {/* Brand + contact */}
                             <Box>
                                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 2 }}>
-                                    <LogoMark height={52} glow />
+                                    <LogoMark height={52} glow animated />
                                     <Typography sx={{ fontWeight: 800, fontSize: 24, letterSpacing: "0.01em", lineHeight: 1 }}>
                                         <Box component="span" sx={{ color: "#fff" }}>APP</Box>
                                         <Box
