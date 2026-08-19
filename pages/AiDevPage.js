@@ -59,10 +59,9 @@ export default function AiDevPage() {
                         fontSize:{xs:15, sm:17, lg:18},
                         lineHeight:1.75,
                     }}>
-                        Our team builds AI directly into the products people use every day &mdash; Gemini and
-                        Vertex AI for reasoning and personalization, ElevenLabs for natural voice, Firebase for
-                        realtime data. Every app below is live in production on both iOS and Android, with the
-                        intelligence built into the core rather than bolted on afterwards.
+                        We build AI directly into the products people use every day. Every app below is live in
+                        production on both iOS and Android &mdash; with intelligence engineered into the core
+                        rather than bolted on after the fact.
                     </Typography>
                 </Box>
 
