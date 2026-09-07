@@ -12,9 +12,15 @@ const FIRE_CSS = `
 .alm-fly{transform-box:fill-box;transform-origin:50% 50%;animation:alm-fly 3.4s ease-in-out infinite}
 @keyframes alm-fly{0%{transform:translate(0px,2.5px) rotate(-1.4deg)}50%{transform:translate(1px,-3.5px) rotate(1.4deg)}100%{transform:translate(0px,2.5px) rotate(-1.4deg)}}
 .alm-tongue{transform-box:fill-box;transform-origin:50% 0%}
+.alm-t0{animation:alm-lick0 .78s ease-in-out infinite;animation-delay:-.07s}
 .alm-t1{animation:alm-lick1 .52s ease-in-out infinite}
 .alm-t2{animation:alm-lick2 .40s ease-in-out infinite;animation-delay:-.13s}
 .alm-t3{animation:alm-lick3 .30s ease-in-out infinite;animation-delay:-.21s}
+@keyframes alm-lick0{0%{transform:scaleY(1) scaleX(1) skewX(0deg);opacity:.34}30%{transform:scaleY(1.2) scaleX(1.05) skewX(-4deg);opacity:.46}60%{transform:scaleY(.88) scaleX(1.1) skewX(3deg);opacity:.28}100%{transform:scaleY(1) scaleX(1) skewX(0deg);opacity:.34}}
+.alm-hot{transform-box:fill-box;transform-origin:50% 0%;animation:alm-hot .21s ease-in-out infinite}
+@keyframes alm-hot{0%,100%{transform:scaleY(1) scaleX(1);opacity:.95}50%{transform:scaleY(1.35) scaleX(.86);opacity:.7}}
+.alm-streak{transform-box:fill-box;transform-origin:50% 0%;animation:alm-streak .9s ease-in-out infinite}
+@keyframes alm-streak{0%,100%{transform:scaleY(1);opacity:.18}50%{transform:scaleY(1.7);opacity:.4}}
 @keyframes alm-lick1{0%{transform:scaleY(1) scaleX(1) skewX(0deg);opacity:.9}22%{transform:scaleY(1.26) scaleX(.93) skewX(6deg);opacity:1}44%{transform:scaleY(.9) scaleX(1.06) skewX(-5deg);opacity:.82}66%{transform:scaleY(1.17) scaleX(.97) skewX(4deg);opacity:1}84%{transform:scaleY(.97) scaleX(1.03) skewX(-2deg);opacity:.9}100%{transform:scaleY(1) scaleX(1) skewX(0deg);opacity:.9}}
 @keyframes alm-lick2{0%{transform:scaleY(1) scaleX(1) skewX(0deg);opacity:.9}25%{transform:scaleY(1.34) scaleX(.9) skewX(-7deg);opacity:1}50%{transform:scaleY(.85) scaleX(1.08) skewX(6deg);opacity:.8}75%{transform:scaleY(1.2) scaleX(.95) skewX(-4deg);opacity:1}100%{transform:scaleY(1) scaleX(1) skewX(0deg);opacity:.9}}
 @keyframes alm-lick3{0%{transform:scaleY(1.05) scaleX(1) skewX(2deg);opacity:.95}30%{transform:scaleY(1.42) scaleX(.88) skewX(8deg);opacity:1}55%{transform:scaleY(.8) scaleX(1.1) skewX(-6deg);opacity:.85}80%{transform:scaleY(1.28) scaleX(.94) skewX(5deg);opacity:1}100%{transform:scaleY(1.05) scaleX(1) skewX(2deg);opacity:.95}}
@@ -22,12 +28,16 @@ const FIRE_CSS = `
 .alm-s1{animation:alm-spark1 1.05s ease-in infinite}
 .alm-s2{animation:alm-spark2 1.35s ease-in infinite;animation-delay:-.5s}
 .alm-s3{animation:alm-spark3 .9s ease-in infinite;animation-delay:-.3s}
+.alm-s4{animation:alm-spark4 1.18s ease-in infinite;animation-delay:-.75s}
+.alm-s5{animation:alm-spark5 .82s ease-in infinite;animation-delay:-.15s}
 @keyframes alm-spark1{0%{transform:translate(0,0) scale(1);opacity:0}18%{opacity:.95}100%{transform:translate(-5px,18px) scale(.2);opacity:0}}
 @keyframes alm-spark2{0%{transform:translate(0,0) scale(1);opacity:0}18%{opacity:.9}100%{transform:translate(-9px,14px) scale(.2);opacity:0}}
 @keyframes alm-spark3{0%{transform:translate(0,0) scale(1);opacity:0}18%{opacity:.85}100%{transform:translate(2px,17px) scale(.2);opacity:0}}
+@keyframes alm-spark4{0%{transform:translate(0,0) scale(1);opacity:0}20%{opacity:.9}100%{transform:translate(7px,20px) scale(.15);opacity:0}}
+@keyframes alm-spark5{0%{transform:translate(0,0) scale(1);opacity:0}22%{opacity:1}100%{transform:translate(-2px,23px) scale(.18);opacity:0}}
 .alm-glow{transform-box:fill-box;transform-origin:center;animation:alm-glowp .55s ease-in-out infinite}
-@keyframes alm-glowp{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.7;transform:scale(1.14)}}
-@media (prefers-reduced-motion:reduce){.alm-fly,.alm-tongue,.alm-spark,.alm-glow{animation:none}}
+@keyframes alm-glowp{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.75;transform:scale(1.18)}}
+@media (prefers-reduced-motion:reduce){.alm-fly,.alm-tongue,.alm-spark,.alm-glow,.alm-hot,.alm-streak{animation:none}}
 `;
 
 /**
@@ -94,14 +104,22 @@ export default function LogoMark({ height = 40, glow = false, animated = false, 
                 <g className="alm-fly">
                     <g transform="rotate(22 60 81.5)">
                         <ellipse className="alm-glow" cx="60" cy="132" rx="26" ry="30" fill={`url(#${g("glow")})`} />
-                        {/* fire: three tongues licking at different rates */}
+                        {/* thin afterburner streak trailing the plume */}
+                        <ellipse className="alm-streak" cx="60" cy="150" rx="3.6" ry="17" fill={`url(#${g("flame")})`} />
+                        {/* fire: four layers licking at different rates — a wide
+                            outer haze, the main plume, a mid tongue and a hot core */}
+                        <g className="alm-tongue alm-t0"><path d={FLAME} transform="translate(60 118) scale(1.2) translate(-60 -118)" fill={`url(#${g("flame")})`} /></g>
                         <g className="alm-tongue alm-t1"><path d={FLAME} fill={`url(#${g("flame")})`} /></g>
                         <g className="alm-tongue alm-t2"><path d={FLAME} transform="translate(60 124) scale(0.82) translate(-60 -124)" fill={`url(#${g("flame")})`} /></g>
                         <g className="alm-tongue alm-t3"><path d={FLAME} transform="translate(60 126) scale(0.5) translate(-60 -126)" fill={`url(#${g("core")})`} /></g>
+                        {/* white-hot spot right at the nozzle */}
+                        <ellipse className="alm-hot" cx="60" cy="110" rx="7" ry="9" fill={`url(#${g("core")})`} />
                         {/* embers */}
                         <circle className="alm-spark alm-s1" cx="59" cy="150" r="2.1" fill="#EBC2FF" />
                         <circle className="alm-spark alm-s2" cx="62" cy="146" r="1.6" fill="#F6E7FF" />
                         <circle className="alm-spark alm-s3" cx="57" cy="147" r="1.4" fill="#D9A6FF" />
+                        <circle className="alm-spark alm-s4" cx="64" cy="149" r="1.2" fill="#EBC2FF" />
+                        <circle className="alm-spark alm-s5" cx="56" cy="152" r="1.7" fill="#FFFFFF" />
                         {body}
                     </g>
                 </g>

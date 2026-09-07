@@ -1,5 +1,6 @@
-// The AI-integrated apps. Single source of truth — rendered on AiDevPage,
-// MobileDevPage and Portfolio, so a change here lands everywhere at once.
+// The flagship apps we've worked on. Single source of truth — rendered as the
+// "Apps we've lit up" proof strip on every service page and in Portfolio, so a
+// change here lands everywhere at once.
 // Logo files live in public/images/ and are lowercase on purpose: the build
 // host is case-sensitive even though macOS is not.
 // img: null falls back to the initials tile in ProjectCard.
