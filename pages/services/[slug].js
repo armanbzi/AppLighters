@@ -64,7 +64,10 @@ export default function ServicePage({ slug }) {
                     background: "radial-gradient(ellipse at 50% 0%, #241830 0%, #0d0b12 72%)",
                 }}
             >
-                {HeroBg ? <HeroBg /> : <AuroraBg accent={accent} />}
+                {/* Hero animation dialed back a touch so the title/tagline read clearly over it */}
+                <Box sx={{ position: "absolute", inset: 0, zIndex: 0, opacity: 0.8 }}>
+                    {HeroBg ? <HeroBg /> : <AuroraBg accent={accent} />}
+                </Box>
                 <Box
                     sx={{
                         position: "relative",
