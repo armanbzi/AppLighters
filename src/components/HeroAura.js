@@ -234,13 +234,15 @@ export default function HeroAura() {
                 viewBox="0 0 200 120"
                 sx={{
                     position: "absolute",
-                    top: "50%",
+                    // Eye lifted to the top of the aura so the headline below reads clean;
+                    // the rings, halo, rays and glow stay centered where they were.
+                    top: { xs: "-18%", sm: "2%", lg: "8%" },
                     left: "50%",
-                    width: { xs: "62%", sm: "58%", lg: "56%" },
+                    width: { xs: "48%", sm: "46%", lg: "42%" },
                     height: "auto",
                     transform: "translate(-50%, -50%)",
                     overflow: "visible",
-                    opacity: 0.74, // slightly dimmed so it sits behind the copy
+                    opacity: 0.88, // clear of the copy now, so it can read crisper
                 }}
             >
                 <defs>

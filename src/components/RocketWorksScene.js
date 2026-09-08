@@ -510,42 +510,56 @@ export default function RocketWorksScene({ sx }) {
                 ctx.restore();
             }
 
-            // courier ferrying upgrade modules into the hatch
+            // courier ferrying upgrade modules into the hatch. It never gets a
+            // module out of thin air: after each install it recedes into the
+            // depths of the bay (shrinking + fading toward the depot point),
+            // restocks off-screen, and flies back in already carrying the next
+            // crate.
             const dock = [hatch.x + hatch.w + s * 0.85, hatch.y + hatch.h * 0.4];
-            const home = [Math.min(w - s, rx + RW * 2.05), hatch.y - RH * 0.1];
+            const depot = [Math.min(w - s * 0.5, rx + RW * 2.7), bodyTop - RH * 0.03];
             const ph = t % CYC;
             if (prevPh > ph) prevPh = 0; // wrapped
-            let cx2, cy2, carrying = false, tiltC = 0;
+            let cx2, cy2, sc = 1, al = 1, carrying = false, tiltC = 0, visible = true;
             if (ph < 2.4) {
+                // emerge from the depot, growing back to full size, crate in hand
                 const u = ease(ph / 2.4);
-                cx2 = home[0] + (dock[0] - home[0]) * u;
-                cy2 = home[1] + (dock[1] - home[1]) * u + Math.sin(u * Math.PI) * -RH * 0.06;
+                cx2 = depot[0] + (dock[0] - depot[0]) * u;
+                cy2 = depot[1] + (dock[1] - depot[1]) * u + Math.sin(u * Math.PI) * -RH * 0.05;
+                sc = 0.35 + 0.65 * u;
+                al = Math.min(1, ph / 0.45);
                 carrying = true;
                 tiltC = -0.1 * (1 - u);
             } else if (ph < 3.4) {
                 cx2 = dock[0]; cy2 = dock[1];
                 carrying = false; // module is sliding in
                 if (prevPh < 2.4) pulseT = t + 0.55; // fire the hull pulse as it seats
-            } else if (ph < 4.6) {
+            } else if (ph < 4.2) {
                 cx2 = dock[0]; cy2 = dock[1] + Math.sin(t * 2.4) * s * 0.1;
-            } else if (ph < 7) {
-                const u = ease((ph - 4.6) / 2.4);
-                cx2 = dock[0] + (home[0] - dock[0]) * u;
-                cy2 = dock[1] + (home[1] - dock[1]) * u + Math.sin(u * Math.PI) * -RH * 0.05;
+            } else if (ph < 6.6) {
+                // recede into the background toward the depot, fading out
+                const u = ease((ph - 4.2) / 2.4);
+                cx2 = dock[0] + (depot[0] - dock[0]) * u;
+                cy2 = dock[1] + (depot[1] - dock[1]) * u + Math.sin(u * Math.PI) * -RH * 0.04;
+                sc = 1 - 0.65 * u;
+                al = Math.min(1, (6.6 - ph) / 0.4);
                 tiltC = 0.1 * (1 - Math.abs(u - 0.5) * 2);
             } else {
-                cx2 = home[0]; cy2 = home[1] + Math.sin(t * 2.2) * s * 0.12;
+                visible = false; // out of sight, picking up the next module
             }
             prevPh = ph;
-            const cour = robot(cx2, cy2, s, { t, eye: "#7CF3D0", look: -1, tilt: tiltC });
-            const modW = s * 0.52;
-            if (carrying || (ph >= 7 || ph < 2.4)) {
+            if (visible) {
+            const cs = s * sc;
+            ctx.save();
+            ctx.globalAlpha = al;
+            const cour = robot(cx2, cy2, cs, { t, eye: "#7CF3D0", look: ph < 4.2 ? -1 : 1, tilt: tiltC });
+            const modW = cs * 0.52;
+            if (carrying || ph < 2.4) {
                 if (carrying) {
                     // module held under the body
-                    arm(cour.shL, [cx2 - modW * 0.45, cy2 + s * 0.75], s, 1);
-                    arm(cour.shR, [cx2 + modW * 0.45, cy2 + s * 0.75], s, -1);
+                    arm(cour.shL, [cx2 - modW * 0.45, cy2 + cs * 0.75], cs, 1);
+                    arm(cour.shR, [cx2 + modW * 0.45, cy2 + cs * 0.75], cs, -1);
                     ctx.save();
-                    ctx.translate(cx2, cy2 + s * 0.85);
+                    ctx.translate(cx2, cy2 + cs * 0.85);
                     ctx.fillStyle = "#2A1840";
                     rr(-modW / 2, -modW / 2, modW, modW, modW * 0.2);
                     ctx.fill();
@@ -567,13 +581,13 @@ export default function RocketWorksScene({ sx }) {
             } else if (ph < 3.4) {
                 // module easing from the courier into the hatch
                 const mu = ease(clamp01((ph - 2.4) / 0.8));
-                const mx2 = dock[0] - s * 0.2 + (hatch.x + hatch.w * 0.45 - dock[0]) * mu;
-                const my2 = dock[1] + s * 0.85 + (hatch.y + hatch.h * 0.5 - dock[1] - s * 0.85) * mu;
-                const sc = 1 - 0.35 * mu;
-                arm(cour.shL, [mx2, my2 - modW * 0.6 * sc], s, 1);
+                const mx2 = dock[0] - cs * 0.2 + (hatch.x + hatch.w * 0.45 - dock[0]) * mu;
+                const my2 = dock[1] + cs * 0.85 + (hatch.y + hatch.h * 0.5 - dock[1] - cs * 0.85) * mu;
+                const shrink = 1 - 0.35 * mu;
+                arm(cour.shL, [mx2, my2 - modW * 0.6 * shrink], cs, 1);
                 ctx.save();
                 ctx.translate(mx2, my2);
-                ctx.scale(sc, sc);
+                ctx.scale(shrink, shrink);
                 ctx.globalAlpha = 1 - mu * 0.35;
                 ctx.fillStyle = "#2A1840";
                 rr(-modW / 2, -modW / 2, modW, modW, modW * 0.2);
@@ -584,6 +598,8 @@ export default function RocketWorksScene({ sx }) {
                 ctx.fillStyle = "#C98BFF";
                 ctx.beginPath(); ctx.arc(0, 0, modW * 0.16, 0, Math.PI * 2); ctx.fill();
                 ctx.restore();
+            }
+            ctx.restore();
             }
 
             if (depth >= 0) drone();
