@@ -54,6 +54,14 @@ import BackupRounded from "@mui/icons-material/BackupRounded";
 import VerifiedUserRounded from "@mui/icons-material/VerifiedUserRounded";
 import PolicyRounded from "@mui/icons-material/PolicyRounded";
 
+import DesignServicesRounded from "@mui/icons-material/DesignServicesRounded";
+import BrushRounded from "@mui/icons-material/BrushRounded";
+import PaletteRounded from "@mui/icons-material/PaletteRounded";
+import DevicesRounded from "@mui/icons-material/DevicesRounded";
+import TouchAppRounded from "@mui/icons-material/TouchAppRounded";
+import DarkModeRounded from "@mui/icons-material/DarkModeRounded";
+import AutoFixHighRounded from "@mui/icons-material/AutoFixHighRounded";
+
 export const services = [
     {
         slug: "ai-integration",
@@ -194,7 +202,31 @@ export const services = [
             { stat: "Audit-ready", label: "compliance foundations" },
         ],
     },
+    {
+        slug: "ui-ux",
+        name: "UI & UX Modernization",
+        navLabel: "UI & UX",
+        icon: DesignServicesRounded,
+        accent: { a: "#F472B6", b: "#A855F7" },
+        tagline: "Make your app look as good as it works.",
+        overview:
+            "A dated interface makes a solid product feel old — and costs you trust before a single feature runs. We modernize the design of the app you already have: a refreshed UI on the flows your users know, a consistent design system underneath, and the polish, motion and accessibility that make it feel premium.",
+        included: [
+            { icon: AutoFixHighRounded, title: "UX audit & quick wins", blurb: "Find the friction in your key flows and fix the worst of it fast." },
+            { icon: BrushRounded, title: "UI refresh", blurb: "Modern screens that keep the flows your users already know." },
+            { icon: PaletteRounded, title: "Design system & theming", blurb: "One reusable language for color, type, spacing and components." },
+            { icon: DevicesRounded, title: "Responsive layouts", blurb: "Designs that feel right on phone, tablet and desktop alike." },
+            { icon: TouchAppRounded, title: "Micro-interactions", blurb: "Motion and feedback that make the app feel fast and alive." },
+            { icon: DarkModeRounded, title: "Dark mode & accessibility", blurb: "A proper dark theme plus WCAG-friendly contrast and flows." },
+        ],
+        outcomes: [
+            { stat: "Modern", label: "look without a rebuild" },
+            { stat: "Consistent", label: "design system across screens" },
+            { stat: "WCAG", label: "accessibility built in" },
+        ],
+    },
 ];
+
 
 // Convenience lookups.
 export const serviceSlugs = services.map((s) => s.slug);

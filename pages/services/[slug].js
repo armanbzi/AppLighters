@@ -6,6 +6,7 @@ import CostHeroBg from "../../src/components/CostHeroBg";
 import AutoHeroBg from "../../src/components/AutoHeroBg";
 import CloudHeroBg from "../../src/components/CloudHeroBg";
 import SecurityHeroBg from "../../src/components/SecurityHeroBg";
+import UiHeroBg from "../../src/components/UiHeroBg";
 import ProjectCard from "../../src/components/ProjectCard";
 import CapabilityCard from "../../src/components/CapabilityCard";
 import useReveal from "../../src/components/useReveal";
@@ -27,6 +28,7 @@ const HERO_BACKGROUNDS = {
     "automation": AutoHeroBg, // CI/CD pipeline with stations, merging branch, gears
     "cloud-scaling": CloudHeroBg, // drifting clouds + auto-scaling node cluster
     "security-reliability": SecurityHeroBg, // radar sweep clearing blips + deflecting shield
+    "ui-ux": UiHeroBg, // design pass painting wireframe screens into polished UI
 };
 
 export default function ServicePage({ slug }) {

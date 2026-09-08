@@ -4,6 +4,7 @@ import NextLink from "next/link";
 import HeroAura from "../src/components/HeroAura";
 import AppsTicker from "../src/components/AppsTicker";
 import CapabilityCard from "../src/components/CapabilityCard";
+import RocketWorksScene from "../src/components/RocketWorksScene";
 import StepCard from "../src/components/StepCard";
 import StatsTicker from "../src/components/StatsTicker";
 import ClCards from "../src/components/ClCards";
@@ -114,7 +115,7 @@ export default function Home() {
                         <Typography sx={overline}>WHAT WE DO</Typography>
                         <Typography sx={{ ...sectionTitle, mb: 2.5 }}>How we light up your app</Typography>
                         <Typography sx={{ color: "rgba(255,255,255,.65)", fontSize: { xs: 15, sm: 17, lg: 18 }, lineHeight: 1.75 }}>
-                            Six ways we boost the product you already run &mdash; no rebuild required. Pick a starting
+                            Seven ways we boost the product you already run &mdash; no rebuild required. Pick a starting
                             point, or let us audit your app and tell you where the biggest wins are.
                         </Typography>
                     </Box>
@@ -122,9 +123,43 @@ export default function Home() {
                         display: "grid",
                         gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" },
                         gap: { xs: 2.5, lg: 3 },
+                        // 7 cards ring the rocket service-bay scene at lg (it takes the
+                        // middle cells of the first two rows). Below lg the scene is a
+                        // full-width band and cards auto-flow; the odd 7th card centers.
+                        "& > a:nth-of-type(2n+1):last-of-type": {
+                            gridColumn: { sm: "1 / -1", lg: "2" },
+                            justifySelf: { sm: "center", lg: "stretch" },
+                            width: { sm: "calc(50% - 10px)", lg: "100%" },
+                        },
                     }}>
-                        {services.map((s) => (
-                            <CapabilityCard key={s.slug} service={s} />
+                        {[
+                            ["ai-integration", "1", "1"],
+                            ["data-storage", "1", "3"],
+                            ["cost-optimization", "3", "1"],
+                            ["automation", "1", "2"],
+                        ].map(([slug, col, row]) => (
+                            <CapabilityCard
+                                key={slug}
+                                service={services.find((s) => s.slug === slug)}
+                                sx={{ gridColumn: { lg: col }, gridRow: { lg: row } }}
+                            />
+                        ))}
+                        <RocketWorksScene sx={{
+                            gridColumn: { xs: "1 / -1", lg: "2" },
+                            gridRow: { lg: "1 / span 2" },
+                            height: { xs: 340, sm: 400, lg: "100%" },
+                            minHeight: { lg: 420 },
+                        }} />
+                        {[
+                            ["cloud-scaling", "3", "3"],
+                            ["security-reliability", "3", "2"],
+                            ["ui-ux", "2", "3"],
+                        ].map(([slug, col, row]) => (
+                            <CapabilityCard
+                                key={slug}
+                                service={services.find((s) => s.slug === slug)}
+                                sx={{ gridColumn: { lg: col }, gridRow: { lg: row } }}
+                            />
                         ))}
                     </Box>
                 </Box>

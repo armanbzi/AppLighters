@@ -16,8 +16,8 @@ init("1ihU6hWB-uNhXs5cS");
 
 const socials = [
     { Icon: Linkedin, href: "https://de.linkedin.com/in/arman-bazarchi-4395631a0" },
-    { Icon: Instagram },
-    { Icon: Facebook },
+    { Icon: Instagram, href: "https://www.instagram.com/__armwnn/" },
+    { Icon: Facebook, href: "https://www.facebook.com/arman.bazarchi.5" },
 ];
 
 const navLinks = [

@@ -7,7 +7,7 @@ import CardBg from "./CardBg";
 // One capability tile for the homepage grid. Instead of a static icon it runs a
 // miniature of that service's own hero animation in the card background —
 // drifting slowly at rest and accelerating while hovered/focused (see CardBg).
-export default function CapabilityCard({ service }) {
+export default function CapabilityCard({ service, sx }) {
     const [hovered, setHovered] = useState(false);
     if (!service) return null;
     const { slug, name, tagline, accent } = service;
@@ -52,6 +52,7 @@ export default function CapabilityCard({ service }) {
                     "& .cap-bg": { opacity: 0.95 }, // art brightens as it speeds up
                 },
                 "&:focus-visible": { outline: "2px solid rgba(178,79,224,0.75)", outlineOffset: "3px" },
+                ...sx,
             }}
         >
             <Box className="cap-bg" sx={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: "inherit", opacity: 0.62, transition: "opacity .3s ease" }}>

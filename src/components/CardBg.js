@@ -327,6 +327,86 @@ function boost(ctx, w, h, t, C, rgba) {
     ctx.restore();
 }
 
+
+// UI & UX Modernization — a wireframe screen repeatedly "painted" into a
+// polished card by a design pass sweeping across, with palette dots drifting.
+function uiux(ctx, w, h, t, C, rgba) {
+    const cw = Math.min(w * 0.5, 120), ch = Math.min(h * 0.62, 84);
+    const x0 = (w - cw) / 2, y0 = (h - ch) / 2;
+    const rr = (x, y, rw, rh, r) => {
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(x, y, rw, rh, r); else ctx.rect(x, y, rw, rh);
+    };
+
+    // sweep: travel, hold painted, fade back
+    const p = (t * 0.22) % 1;
+    let sweepX, fade = 1;
+    const easeQ = (f) => (f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2);
+    if (p < 0.62) sweepX = x0 - 24 + (cw + 48) * easeQ(p / 0.62);
+    else if (p < 0.84) sweepX = x0 + cw + 24;
+    else { sweepX = x0 + cw + 24; fade = 1 - easeQ((p - 0.84) / 0.16); }
+    const paint = Math.max(0, Math.min(1, (sweepX - x0 - cw * 0.35) / (cw * 0.5))) * fade;
+
+    // wireframe layer
+    const wf = 1 - paint * 0.7;
+    ctx.strokeStyle = rgba(C.a, 0.4 * wf);
+    ctx.lineWidth = 1;
+    rr(x0, y0, cw, ch, 7); ctx.stroke();
+    ctx.setLineDash([3, 3]);
+    ctx.strokeStyle = rgba(C.a, 0.3 * wf);
+    ctx.beginPath();
+    ctx.moveTo(x0 + 7, y0 + 13); ctx.lineTo(x0 + cw - 7, y0 + 13);
+    ctx.moveTo(x0 + 7, y0 + ch * 0.52); ctx.lineTo(x0 + cw - 7, y0 + ch * 0.52);
+    ctx.moveTo(x0 + 7, y0 + ch * 0.52 + 7); ctx.lineTo(x0 + cw * 0.6, y0 + ch * 0.52 + 7);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // painted layer
+    if (paint > 0.01) {
+        ctx.save();
+        ctx.globalAlpha = paint;
+        const g = ctx.createLinearGradient(x0, y0, x0, y0 + ch);
+        g.addColorStop(0, rgba(C.a, 0.2));
+        g.addColorStop(1, rgba(C.b, 0.12));
+        ctx.fillStyle = g;
+        rr(x0, y0, cw, ch, 7); ctx.fill();
+        ctx.strokeStyle = rgba(C.a, 0.7);
+        rr(x0, y0, cw, ch, 7); ctx.stroke();
+        ctx.fillStyle = rgba(C.a, 0.9);
+        rr(x0 + 7, y0 + 7, cw * 0.4, 6, 3); ctx.fill();
+        ctx.fillStyle = "rgba(255,255,255,0.85)";
+        ctx.beginPath(); ctx.arc(x0 + cw - 12, y0 + 10, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = "rgba(255,255,255,0.42)";
+        rr(x0 + 7, y0 + ch * 0.46, cw - 14, 4, 2); ctx.fill();
+        rr(x0 + 7, y0 + ch * 0.46 + 8, cw * 0.55, 4, 2); ctx.fill();
+        ctx.fillStyle = rgba(C.b, 0.95);
+        rr(x0 + 7, y0 + ch - 14, 24, 7, 3.5); ctx.fill();
+        ctx.restore();
+    }
+
+    // the pass itself
+    if (p < 0.62) {
+        const band = ctx.createLinearGradient(sweepX - 30, 0, sweepX + 8, 0);
+        band.addColorStop(0, rgba(C.b, 0));
+        band.addColorStop(0.8, rgba(C.a, 0.26));
+        band.addColorStop(1, rgba(C.a, 0));
+        ctx.fillStyle = band;
+        ctx.fillRect(sweepX - 30, y0 - 10, 38, ch + 20);
+        ctx.strokeStyle = "rgba(255,255,255,0.55)";
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.moveTo(sweepX, y0 - 10); ctx.lineTo(sweepX, y0 + ch + 10); ctx.stroke();
+    }
+
+    // palette dots drifting up either side
+    [{ fx: 0.13, o: 0, c: C.a }, { fx: 0.88, o: 0.5, c: C.b }, { fx: 0.08, o: 0.75, c: C.b }].forEach((d) => {
+        const q = (t * 0.11 + d.o) % 1;
+        const y = h * (0.92 - q * 0.8);
+        const x = w * d.fx + Math.sin(t * 0.8 + d.o * 7) * 5;
+        ctx.fillStyle = rgba(d.c, Math.sin(Math.PI * q) * 0.6);
+        ctx.beginPath(); ctx.arc(x, y, 2.6, 0, Math.PI * 2); ctx.fill();
+    });
+}
+
 const SCENES = {
     "ai-integration": neural,
     "data-storage": mandala,
@@ -334,6 +414,7 @@ const SCENES = {
     "automation": infinity,
     "cloud-scaling": clouds,
     "security-reliability": radar,
+    "ui-ux": uiux,
     audit,
     plan,
     boost,
