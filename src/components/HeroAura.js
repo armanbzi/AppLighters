@@ -236,7 +236,7 @@ export default function HeroAura() {
                     position: "absolute",
                     // Eye lifted to the top of the aura so the headline below reads clean;
                     // the rings, halo, rays and glow stay centered where they were.
-                    top: { xs: "-18%", sm: "2%", lg: "8%" },
+                    top: { xs: "6%", sm: "2%", lg: "8%" },
                     left: "50%",
                     width: { xs: "48%", sm: "46%", lg: "42%" },
                     height: "auto",

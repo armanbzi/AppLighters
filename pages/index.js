@@ -63,7 +63,7 @@ export default function Home() {
                 background: "radial-gradient(ellipse at 50% 42%, #2a1b33 0%, #17131d 72%)",
             }}>
                 <HeroAura />
-                <Box sx={{ ...pageContainer, position: "relative", zIndex: 2, textAlign: "center", pt: "100px", pb: { xs: 16, md: 14 } }}>
+                <Box sx={{ ...pageContainer, position: "relative", zIndex: 2, textAlign: "center", pt: { xs: "330px", sm: "100px" }, pb: { xs: 16, md: 14 } }}>
                     <Typography component="h1" sx={{ ...sectionTitle, fontSize: { xs: 38, sm: 54, lg: 68 }, mb: 3, filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.9)) drop-shadow(0 3px 16px rgba(0,0,0,0.7))" }}>
                         We Light Up Your App
                     </Typography>
