@@ -5,6 +5,8 @@ import {
     Box, Typography
 } from "@mui/material";
 import aiApps from "../src/data/aiApps";
+import { pageContainer } from "../src/lib/layout";
+import AuroraBg from "../src/components/AuroraBg";
 import { useUserAgent } from 'next-useragent'
 
 
@@ -18,10 +20,9 @@ export default function Portfolio() {
 
     const sectionHeading = {
         color: '#fff',
-        fontWeight: 700,
+        fontWeight: 800,
         fontSize: {xs:24, sm:28, lg:32},
-        textAlign: 'center',
-        letterSpacing: '.02em',
+        letterSpacing: '-0.01em',
     };
 
     const grid = {
@@ -33,22 +34,21 @@ export default function Portfolio() {
             lg: 'repeat(4, 1fr)',
         },
         gap: {xs:2.5, lg:3.5},
-        maxWidth: 1180,
-        mx: 'auto',
     };
 
     return (
         <Layout>
+            {/* Header, with the ambient aurora used across the service pages */}
             <Box sx={{
-                minHeight: 'calc(100vh - 100px)',
-                background: 'linear-gradient(180deg, #3a3446 0%, #262130 100%)',
-                pt: {xs:6, lg:9},
-                pb: {xs:8, lg:14},
-                px: {xs:2, sm:4},
+                position: 'relative',
+                overflow: 'hidden',
+                marginTop: '-100px',
+                pt: '100px',
+                background: 'radial-gradient(ellipse at 50% 0%, #241830 0%, #0d0b12 74%)',
             }}>
-
-                {/* Page header */}
-                <Box sx={{textAlign:'center', mb:{xs:6, lg:9}}}>
+                <AuroraBg accent={{ a: '#C15BEE', b: '#7E2BD8' }} />
+                <Box sx={{ ...pageContainer, position: 'relative', zIndex: 2, py: {xs:8, lg:13} }}>
+                <Box sx={{textAlign:'center'}}>
                     <Typography sx={{
                         color:'#B24FE0',
                         fontWeight:700,
@@ -56,7 +56,7 @@ export default function Portfolio() {
                         fontSize:{xs:12, lg:13},
                         mb:1.5,
                     }}>
-                        PORTFOLIO
+                        OUR WORK
                     </Typography>
                     <Typography sx={{
                         color:'#fff',
@@ -70,23 +70,35 @@ export default function Portfolio() {
                         WebkitTextFillColor: 'transparent',
                         mb:2,
                     }}>
-                        Our Work
+                        Apps we&apos;ve lit up
                     </Typography>
                     <Typography sx={{
                         color:'rgba(255,255,255,.6)',
                         fontSize:{xs:15, lg:18},
                         lineHeight:1.6,
-                        maxWidth:620,
+                        maxWidth:640,
                         mx:'auto',
                     }}>
-                        A selection of the web and mobile products we&apos;ve designed, built, and shipped.
+                        A selection of the web and mobile products we&apos;ve enhanced, optimized and scaled &mdash;
+                        from new AI features to faster data, lower cloud costs and rock-solid reliability.
                     </Typography>
                 </Box>
+                </Box>
+            </Box>
+
+            {/* Work */}
+            <Box sx={{
+                background: 'linear-gradient(180deg, #14111b 0%, #0f0d14 100%)',
+                pb: {xs:8, lg:14},
+                pt: {xs:7, lg:11},
+            }}>
+              <Box sx={pageContainer}>
 
                 {/* Web Apps */}
-                <Typography sx={{...sectionHeading, mb:{xs:3.5, lg:5}}}>
-                    Web Apps
-                </Typography>
+                <Box sx={{ display:'flex', alignItems:'center', gap:2.5, mb:{xs:3.5, lg:5} }}>
+                    <Typography sx={sectionHeading}>Web Apps</Typography>
+                    <Box sx={{ flex:1, height:'1px', background:'linear-gradient(90deg, rgba(201,139,255,0.4) 0%, rgba(201,139,255,0) 100%)' }} />
+                </Box>
 
                 <Box sx={grid}>
                     <ProjectCard frameWorks={['NextJs','MUI','React']} name={"AppLighters"} img={'/images/applighters-app.png'}
@@ -107,9 +119,10 @@ export default function Portfolio() {
                 </Box>
 
                 {/* Mobile Apps */}
-                <Typography sx={{...sectionHeading, mt:{xs:8, lg:12}, mb:{xs:3.5, lg:5}}}>
-                    Mobile Apps
-                </Typography>
+                <Box sx={{ display:'flex', alignItems:'center', gap:2.5, mt:{xs:8, lg:12}, mb:{xs:3.5, lg:5} }}>
+                    <Typography sx={sectionHeading}>Mobile Apps</Typography>
+                    <Box sx={{ flex:1, height:'1px', background:'linear-gradient(90deg, rgba(201,139,255,0.4) 0%, rgba(201,139,255,0) 100%)' }} />
+                </Box>
 
                 <Box sx={grid}>
                     {aiApps.map((app) => (
@@ -138,6 +151,7 @@ export default function Portfolio() {
                                      :'https://apps.apple.com/us/app/beactive/id1540248728'}/>
                 </Box>
 
+              </Box>
             </Box>
         </Layout>
     );}

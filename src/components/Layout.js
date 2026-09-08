@@ -9,21 +9,20 @@ import Linkedin from "../../public/icons/socials/linkedin.svg";
 import MailLink from "./MailLink";
 import { useForm } from "react-hook-form";
 import { init, sendForm } from "emailjs-com";
+import { services } from "../data/services";
+import { pageContainer } from "../lib/layout";
 
 init("1ihU6hWB-uNhXs5cS");
 
 const socials = [
     { Icon: Linkedin, href: "https://de.linkedin.com/in/arman-bazarchi-4395631a0" },
-    { Icon: Instagram },
-    { Icon: Facebook },
+    { Icon: Instagram, href: "https://www.instagram.com/__armwnn/" },
+    { Icon: Facebook, href: "https://www.facebook.com/arman.bazarchi.5" },
 ];
 
 const navLinks = [
-    { label: "Portfolio", href: "/Portfolio" },
-    { label: "Mobile", href: "/MobileDevPage" },
-    { label: "Web", href: "/WebDevPage" },
-    { label: "AI Integrated", href: "/AiDevPage" },
-    { label: "Blockchain", href: "/BlockDevPage" },
+    ...services.map((s) => ({ label: s.navLabel, href: `/services/${s.slug}` })),
+    { label: "Work", href: "/Portfolio" },
 ];
 
 const labelSx = { display: "block", color: "rgba(255,255,255,0.75)", fontSize: 13, fontWeight: 600, mb: 0.75 };
@@ -83,7 +82,7 @@ const footerNavSx = {
     "&:hover": { color: "#C98BFF" },
 };
 
-export default function Layout({ children, menu, footerCoversBg }) {
+export default function Layout({ children }) {
     const { handleSubmit } = useForm();
 
     const onSubmit = () => {
@@ -103,25 +102,22 @@ export default function Layout({ children, menu, footerCoversBg }) {
 
     return (
         <Box sx={{ position: "relative" }}>
-            <Navigation menu={menu} />
+            <Navigation />
             {children}
 
             <Box
                 component="footer"
                 sx={{
-                    // WebDevPage opts in (footerCoversBg) so its large squares stay in the hero.
-                    // Default (AI/Blockchain/Mobile): footer sits below the fixed animation
-                    // so stars/particles/cubes keep running through the footer as before.
-                    ...(footerCoversBg ? { position: "relative", zIndex: 2 } : {}),
+                    position: "relative",
+                    zIndex: 2,
                     backgroundColor: "#17151d",
                     borderTop: "1px solid rgba(255,255,255,0.07)",
                     color: "#fff",
-                    px: { xs: 3, sm: 6, lg: 8 },
                     pt: { xs: 6, md: 9 },
                     pb: { xs: 4, md: 5 },
                 }}
             >
-                <Box id="Estimate" sx={{ maxWidth: 1180, mx: "auto" }}>
+                <Box id="Estimate" sx={pageContainer}>
                         <Box
                             sx={{
                                 display: "grid",
@@ -133,10 +129,10 @@ export default function Layout({ children, menu, footerCoversBg }) {
                             {/* Estimate form */}
                             <Box>
                                 <Typography component="h2" sx={{ fontWeight: 800, fontSize: { xs: 26, md: 32 }, lineHeight: 1.15, mb: 1 }}>
-                                    Request an Estimate
+                                    Boost My App
                                 </Typography>
                                 <Typography sx={{ color: "rgba(255,255,255,0.6)", fontSize: { xs: 14, md: 15 }, lineHeight: 1.6, mb: 3.5, maxWidth: 460 }}>
-                                    Tell us about your project and we&apos;ll get back to you within one business day.
+                                    Tell us about the app you already have and what you&apos;d like to improve &mdash; we&apos;ll reply within one business day with how we&apos;d light it up.
                                 </Typography>
 
                                 <Box component="form" id="contact-form" onSubmit={handleSubmit(onSubmit)} method="post">
@@ -151,14 +147,14 @@ export default function Layout({ children, menu, footerCoversBg }) {
                                         </Box>
                                     </Box>
                                     <Box sx={{ mb: 2.5 }}>
-                                        <Typography component="label" htmlFor="message" sx={labelSx}>Project detail</Typography>
+                                        <Typography component="label" htmlFor="message" sx={labelSx}>Tell us about your app</Typography>
                                         <Box
                                             component="textarea"
                                             id="message"
                                             name="message"
                                             required
                                             rows={5}
-                                            placeholder="Tell us what you're building..."
+                                            placeholder="What does your app do, and what would you like to improve? (AI features, speed, cost, scaling, security...)"
                                             sx={{ ...fieldSx, resize: "vertical", minHeight: 120, lineHeight: 1.6 }}
                                         />
                                     </Box>
@@ -189,7 +185,7 @@ export default function Layout({ children, menu, footerCoversBg }) {
                                     </Typography>
                                 </Box>
                                 <Typography sx={{ color: "rgba(255,255,255,0.6)", fontSize: 14.5, lineHeight: 1.7, mb: 4, maxWidth: 340 }}>
-                                    We craft superior web, mobile, AI-integrated and blockchain applications that deliver real results.
+                                    We enhance, optimize and scale the apps you already run &mdash; AI features, faster data, lower costs, cloud, automation and security.
                                 </Typography>
 
                                 <Typography sx={sectionLabelSx}>Get in touch</Typography>
