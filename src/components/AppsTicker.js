@@ -16,7 +16,19 @@ export default function AppsTicker() {
     const trackRef = useRef(null);
     const draggedRef = useRef(false);
 
-    useMarquee({ wrapRef, trackRef, copies: COPIES, drift: 38, draggedRef });
+    useMarquee({
+        wrapRef,
+        trackRef,
+        copies: COPIES,
+        drift: 38,
+        draggedRef,
+        // the row drifts under the pointer, so a tap's native click misses the
+        // moving tile — open the app from the anchor resolved at pointerdown
+        onTap: (a) => {
+            const href = a.getAttribute("href");
+            if (href) window.open(href, "_blank", "noopener,noreferrer");
+        },
+    });
 
     const items = Array.from({ length: COPIES }).flatMap((_, c) =>
         showcaseApps.map((a) => ({ ...a, key: `${c}-${a.name}` }))
@@ -51,7 +63,11 @@ export default function AppsTicker() {
                         rel="noopener noreferrer"
                         aria-label={a.name}
                         draggable={false}
-                        onClick={(e) => { if (draggedRef.current) e.preventDefault(); }}
+                        onClick={(e) => {
+                            if (draggedRef.current) { e.preventDefault(); return; } // drag, not a tap
+                            const plainLeft = e.detail !== 0 && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
+                            if (plainLeft) e.preventDefault(); // handled by onTap; keyboard/modifier clicks open natively
+                        }}
                         sx={{
                             flex: "0 0 auto",
                             position: "relative",
