@@ -1,45 +1,81 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+# AppLighters
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+Marketing site for **AppLighters**, an app-enhancement studio. The positioning is simple: _we light up the app you already have_ — adding AI, optimizing data, cutting cloud costs, hardening security, and scaling it for whatever comes next.
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+The site is a fast, animated, single-brand marketing experience: a signature hero, seven data-driven service pages, a portfolio of shipped work, and a contact flow — all server-rendered for SEO and statically generated at build time.
+
+> **Live:** [www.applighters.com](https://www.applighters.com)
+
+## Tech stack
+
+- **Framework:** Next.js 14 (Pages Router) · React 18
+- **UI & styling:** Material UI v6 + Emotion, with server-side style injection via a custom `_document.js` for flicker-free, SEO-friendly pages
+- **Animation:** bespoke HTML5 Canvas + `requestAnimationFrame` scenes (no animation library), all `prefers-reduced-motion` aware
+- **Contact:** EmailJS (client-side form submission, no backend)
+- **Tooling:** ESLint (`next lint`), Sass for keyframes, `next-videos`, `next-useragent`
+- **Hosting:** Netlify (Git-based CI with deploy previews)
+
+## Features
+
+- **Data-driven services** — a single source of truth (`src/data/services.js`) generates the nav dropdown, homepage grid, footer links, and every `/services/[slug]` page. Add a service object and the whole site picks it up.
+- **Custom motion layer** — a cursor-tracking hero "eye" (`HeroAura`), a unique animated background per service (neural net, data mandala, cost bars, DevOps infinity loop, cloud auto-scaling, security radar, UI design-sweep), a robot-crew rocket service-bay centerpiece, and a physics-based, drag-and-throw app carousel.
+- **Statically generated** — service pages are prerendered via `getStaticPaths` / `getStaticProps`.
+- **Accessible & responsive** — fluid layout, keyboard-navigable, and a single static frame for every animation under reduced-motion.
+
+## Project structure
+
+```
+pages/
+  index.js              # Homepage: hero, services grid, outcomes, steps, clients
+  Portfolio.js          # "Our work" — shipped web & mobile apps
+  services/[slug].js    # Dynamic, statically-generated service pages
+  _app.js, _document.js # App shell + Emotion SSR setup
+src/
+  components/           # UI + canvas animation components (HeroAura, *HeroBg, AppsTicker, …)
+  data/                 # services.js (source of truth), aiApps.js, showcaseApps.js
+  lib/                  # layout + scroll helpers
+styles/                 # theme.js, Emotion cache, _bgAnim.scss (keyframes)
+public/                 # images, icons, favicons
+next.config.js          # redirects from legacy routes, svgr/next-videos setup
+netlify.toml            # build + cache config
+```
+
+## Getting started
+
+**Prerequisites:** Node.js 18+ and npm.
+
+```bash
+# install dependencies
+npm install
+
+# start the dev server at http://localhost:3000
+npm run dev
+```
+
+## Available scripts
+
+| Script | Description |
+| --- | --- |
+| `npm run dev` | Start the development server (`http://localhost:3000`) |
+| `npm run build` | Production build (static generation) |
+| `npm run start` | Serve the production build locally |
+| `npm run lint` | Run ESLint via `next lint` |
+
+## Architecture notes
+
+- **Adding or editing a service** — edit `src/data/services.js`. Each entry holds `{ slug, name, navLabel, icon, accent, tagline, overview, included[], outcomes[] }`. For a bespoke hero animation, register a component in the `HERO_BACKGROUNDS` map in `pages/services/[slug].js`; otherwise it falls back to the shared `AuroraBg`.
+- **Animation pattern** — canvas scenes share one approach: time-based motion (`dt`), an `IntersectionObserver` that pauses the `requestAnimationFrame` loop off-screen, a capped device-pixel-ratio, and a single static frame under `prefers-reduced-motion`.
+- **Styling order** — SCSS keyframes load globally in `_app.js`; Emotion's cache is configured so MUI `sx` styles win. `_document.js` injects critical styles during SSR to avoid a flash of unstyled content.
+- **Legacy routes** — old URLs (e.g. `/AiDevPage`) are redirected to their new homes in `next.config.js`.
+
+## Contact form
+
+The footer contact form is powered by **EmailJS** (client-side). The service/template/public-key IDs are configured in `src/components/Layout.js`.
+
+## Deployment
+
+Deployed on **Netlify**. Pushes build via `npm run build` (see `netlify.toml`), and pull requests get automatic deploy previews.
 
 ---
 
-## Edit a file
-
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
-
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
-
----
-
-## Create a file
-
-Next, you’ll add a new file to this repository.
-
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
-
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
-
----
-
-## Clone a repository
-
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
-
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
-
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+© AppLighters. All rights reserved.
