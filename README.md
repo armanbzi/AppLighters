@@ -18,7 +18,7 @@ The site is a fast, animated, single-brand marketing experience: a signature her
 ## Features
 
 - **Data-driven services** — a single source of truth (`src/data/services.js`) generates the nav dropdown, homepage grid, footer links, and every `/services/[slug]` page. Add a service object and the whole site picks it up.
-- **Custom motion layer** — a cursor-tracking hero "eye" (`HeroAura`), a unique animated background per service (neural net, data mandala, cost bars, DevOps infinity loop, cloud auto-scaling, security radar, UI design-sweep), a robot-crew rocket service-bay centerpiece, and a physics-based, drag-and-throw app carousel.
+- **Custom motion layer** — a cursor-tracking hero "eye" (`HeroAura`), a unique animated background per service (neural net, data mandala, cost bars, DevOps infinity loop, cloud auto-scaling, security radar, UI design-sweep), a robot-crew rocket service-bay centerpiece you can join — press and hold on it and your cursor becomes a welding torch throwing sparks — and a physics-based, drag-and-throw app carousel.
 - **Statically generated** — service pages are prerendered via `getStaticPaths` / `getStaticProps`.
 - **Accessible & responsive** — fluid layout, keyboard-navigable, and a single static frame for every animation under reduced-motion.
 
@@ -60,6 +60,21 @@ npm run dev
 | `npm run build` | Production build (static generation) |
 | `npm run start` | Serve the production build locally |
 | `npm run lint` | Run ESLint via `next lint` |
+| `npm test` | Unit tests (Node's built-in test runner) |
+| `npm run test:e2e` | End-to-end tests (Playwright) |
+
+## Testing
+
+```bash
+# unit tests — pure logic in src/lib (no browser, no extra dependencies)
+npm test
+
+# end-to-end tests — real browser flows against the running site
+npm run test:e2e
+```
+
+- **Unit** tests live in `tests/unit/` and run on Node's built-in test runner (Node 22+).
+- **E2E** tests live in `tests/e2e/` and run with Playwright in your installed Google Chrome, so no browser download is needed. They reuse a dev server already on `:3000` or start one; set `E2E_BASE_URL` to test a deployed site instead.
 
 ## Architecture notes
 
