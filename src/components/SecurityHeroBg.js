@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
+import { watchLoop } from "../lib/motion.mjs";
 
 // Animated hero background for the Security & Reliability service page: a
 // RADAR sweep anchored in the bottom-left corner scans the hero — threat blips
@@ -31,7 +32,7 @@ export default function SecurityHeroBg() {
         const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-        let w = 0, h = 0, raf = 0, running = true, lastT = 0;
+        let w = 0, h = 0, lastT = 0;
         let radar = null, shield = null, blips = [], bursts = [], attacker = null;
         let blipTimer = 1.5, attackTimer = 3, pulseTimer = 1;
         let pulses = [];
@@ -351,17 +352,9 @@ export default function SecurityHeroBg() {
             drawRadar(t, dt);
             drawShield(t, dt);
             stepAttacker(dt);
-
-            if (running && !reduce) raf = requestAnimationFrame(frame);
         };
 
         /* ── lifecycle ───────────────────────────────────────────────────── */
-
-        const start = () => {
-            if (raf) cancelAnimationFrame(raf);
-            lastT = 0;
-            raf = requestAnimationFrame(frame);
-        };
 
         resize();
         initScene();
@@ -369,22 +362,10 @@ export default function SecurityHeroBg() {
             spawnBlip();
             spawnBlip();
             frame(performance.now()); // one static, fully composed frame
-        } else {
-            start();
         }
 
-        // pause the loop while the hero is scrolled out of view
-        let io;
-        if (!reduce && typeof IntersectionObserver !== "undefined") {
-            io = new IntersectionObserver((entries) => {
-                entries.forEach((e) => {
-                    running = e.isIntersecting;
-                    if (running) start();
-                    else if (raf) cancelAnimationFrame(raf);
-                });
-            });
-            io.observe(wrap);
-        }
+        // run on the shared clock only while on screen and someone is watching
+        const loop = reduce ? null : watchLoop(wrap, frame, { fps: 60, onStart: () => { lastT = 0; } });
 
         let resizeTimer;
         const onResize = () => {
@@ -400,8 +381,7 @@ export default function SecurityHeroBg() {
         return () => {
             window.removeEventListener("resize", onResize);
             clearTimeout(resizeTimer);
-            if (io) io.disconnect();
-            if (raf) cancelAnimationFrame(raf);
+            if (loop) loop.stop();
         };
     }, []);
 

@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
+import { watchLoop } from "../lib/motion.mjs";
 
 // Shared right-to-left marquee physics, used by the hero apps chain and the
 // outcomes band.
 //
-// One rAF loop advances `offset` by (drift + vel). Grabbing pins the track to
+// One loop on the shared motion clock (src/lib/motion.mjs) advances `offset` by (drift + vel). Grabbing pins the track to
 // the pointer; releasing hands over the pointer's recent velocity as `vel`,
 // which then decays exponentially — a flick shoots the row and it coasts back
 // to the resting drift. The track renders its children `copies` times and
@@ -29,7 +30,7 @@ export default function useMarquee({ wrapRef, trackRef, copies = 3, drift = 38, 
         if (!wrap || !track || typeof window === "undefined") return;
         const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        let raf = 0, running = true, last = 0;
+        let last = 0;
         let offset = 0, vel = 0, setW = 1;
         let dragging = false, startX = 0, startOffset = 0, moved = 0;
         let downAnchor = null, downTime = 0;
@@ -51,9 +52,7 @@ export default function useMarquee({ wrapRef, trackRef, copies = 3, drift = 38, 
                 if (Math.abs(vel) < 1) vel = 0;
                 apply();
             }
-            if (running && !reduce) raf = requestAnimationFrame(frame);
         };
-        const start = () => { if (raf) cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame); };
 
         const onDown = (e) => {
             dragging = true;
@@ -95,7 +94,6 @@ export default function useMarquee({ wrapRef, trackRef, copies = 3, drift = 38, 
 
         measure();
         apply();
-        if (!reduce) start();
 
         if (draggable) {
             wrap.addEventListener("pointerdown", onDown);
@@ -104,14 +102,8 @@ export default function useMarquee({ wrapRef, trackRef, copies = 3, drift = 38, 
             wrap.addEventListener("pointercancel", onUp);
         }
 
-        let io;
-        if (!reduce && typeof IntersectionObserver !== "undefined") {
-            io = new IntersectionObserver((es) => es.forEach((en) => {
-                running = en.isIntersecting;
-                if (running) start(); else if (raf) cancelAnimationFrame(raf);
-            }));
-            io.observe(wrap);
-        }
+        // drift on the shared clock only while on screen and someone is watching
+        const loop = reduce ? null : watchLoop(wrap, frame, { fps: 60, onStart: () => { last = 0; } });
         let ro;
         if (typeof ResizeObserver !== "undefined") {
             ro = new ResizeObserver(() => { measure(); apply(); });
@@ -129,9 +121,8 @@ export default function useMarquee({ wrapRef, trackRef, copies = 3, drift = 38, 
                 wrap.removeEventListener("pointercancel", onUp);
             }
             imgs.forEach((im) => im.removeEventListener("load", onImg));
-            if (io) io.disconnect();
+            if (loop) loop.stop();
             if (ro) ro.disconnect();
-            if (raf) cancelAnimationFrame(raf);
         };
     }, [wrapRef, trackRef, copies, drift, draggable, draggedRef]);
 }

@@ -9,6 +9,21 @@
    spinning cubes, floating squares, snowflakes, tsparticles helpers) has been
    removed in favour of HeroAura / AuroraBg. */
 
+/* ── Motion budget (src/lib/motion.mjs) ─────────────────────────────────────
+   Freeze CSS animations nobody can see: everything while the tab is hidden or
+   the window is unfocused (<html data-motion="paused">), and anything inside an
+   element its loop has flagged off-screen ([data-paused]). Canvas loops are
+   stopped by the same module. */
+html[data-motion="paused"] *,
+html[data-motion="paused"] *::before,
+html[data-motion="paused"] *::after,
+[data-paused],
+[data-paused] *,
+[data-paused] *::before,
+[data-paused] *::after {
+  animation-play-state: paused !important;
+}
+
 /* ── Modern background system ─────────────────────────────────────────────── */
 
 /* HeroAura — glowing "ignite" core + counter-rotating light rings + sparks. */

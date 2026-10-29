@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
+import { watchLoop } from "../lib/motion.mjs";
 import {
     STRIKE_BURST,
     spawnSparks,
@@ -22,8 +23,9 @@ import {
 // gantry ratchets a bolt on the nose collar, and a scanner drone orbits the
 // rocket sweeping the plating. Every ~9s the engine test-fires.
 //
-// Pure <canvas> + rAF like the service heroes: time-based motion, paused when
-// off-screen, a single posed frame under prefers-reduced-motion, dpr <= 2.
+// Pure <canvas> on the shared motion clock like the service heroes: time-based
+// motion, paused when off-screen or unwatched, a single posed frame under
+// prefers-reduced-motion, dpr <= 2.
 // It sits in the empty middle cells of the grid.
 //
 // Interactive: press and hold anywhere on the bay and the cursor becomes an
@@ -48,7 +50,10 @@ export default function RocketWorksScene({ sx }) {
 
         const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        let w = 0, h = 0, raf = 0, running = true, last = 0;
+        let w = 0, h = 0, last = 0;
+        // shared-clock loop: the idle bay drifts at 30 fps; it runs at 60 while
+        // the visitor's torch is lit and until its sparks and beads have settled
+        let loop = null, fast = false;
 
         // scene state that persists across frames
         const sparks = []; // welder particles
@@ -709,23 +714,17 @@ export default function RocketWorksScene({ sx }) {
                 if (bd !== statBeads) wrap.dataset.weldBeads = statBeads = bd;
             }
 
-            if (running && !reduce) raf = requestAnimationFrame(frame);
+            if (loop && fast && !torch.lit && !userSparks.length && !beads.length) {
+                fast = false;
+                loop.setFps(30);
+            }
         };
-
-        const start = () => { if (raf) cancelAnimationFrame(raf); last = performance.now() / 1000; raf = requestAnimationFrame(frame); };
 
         resize();
         if (reduce) frame(2000);
-        else start();
+        // run on the shared clock only while on screen and someone is watching
+        else loop = watchLoop(wrap, frame, { fps: 30, onStart: () => { last = performance.now() / 1000; } });
 
-        let io;
-        if (!reduce && typeof IntersectionObserver !== "undefined") {
-            io = new IntersectionObserver((es) => es.forEach((en) => {
-                running = en.isIntersecting;
-                if (running) start(); else if (raf) cancelAnimationFrame(raf);
-            }));
-            io.observe(wrap);
-        }
         // press and hold to weld: lights the torch at the pointer (see torchReducer)
         const POINTER_EVENTS = ["pointerdown", "pointermove", "pointerup", "pointercancel", "pointerleave"];
         const onPointer = (e) => {
@@ -737,6 +736,10 @@ export default function RocketWorksScene({ sx }) {
             if (lit === torch.lit) return;
             torch.lit = lit;
             if (lit) {
+                if (loop && !fast) {
+                    fast = true;
+                    loop.setFps(60);
+                }
                 torch.strikeT = performance.now() / 1000; // same clock as the rAF timestamp
                 torch.burst = true;
                 torch.carry = 0;
@@ -756,8 +759,7 @@ export default function RocketWorksScene({ sx }) {
             POINTER_EVENTS.forEach((type) => wrap.removeEventListener(type, onPointer));
             window.removeEventListener("resize", onResize);
             clearTimeout(rt);
-            if (io) io.disconnect();
-            if (raf) cancelAnimationFrame(raf);
+            if (loop) loop.stop();
         };
     }, []);
 

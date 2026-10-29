@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
+import { watchLoop } from "../lib/motion.mjs";
 
 // Animated hero background for the Cost Optimization service page: rectilinear
 // chart geometry (deliberately different from the Data page's radial mandala).
@@ -31,7 +32,7 @@ export default function CostHeroBg() {
         const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-        let w = 0, h = 0, raf = 0, running = true, lastT = 0;
+        let w = 0, h = 0, lastT = 0;
         let bars = [], tokens = [], trend = null;
 
         const rand = (a, b) => a + Math.random() * (b - a);
@@ -275,17 +276,9 @@ export default function CostHeroBg() {
                 if (tk.y > h * 0.86) Object.assign(tk, spawnToken(false));
                 drawToken(tk, t);
             }
-
-            if (running && !reduce) raf = requestAnimationFrame(frame);
         };
 
         /* ── lifecycle ───────────────────────────────────────────────────── */
-
-        const start = () => {
-            if (raf) cancelAnimationFrame(raf);
-            lastT = 0;
-            raf = requestAnimationFrame(frame);
-        };
 
         const initAll = () => {
             initBars();
@@ -297,22 +290,10 @@ export default function CostHeroBg() {
         initAll();
         if (reduce) {
             frame(performance.now()); // one static, fully composed frame
-        } else {
-            start();
         }
 
-        // pause the loop while the hero is scrolled out of view
-        let io;
-        if (!reduce && typeof IntersectionObserver !== "undefined") {
-            io = new IntersectionObserver((entries) => {
-                entries.forEach((e) => {
-                    running = e.isIntersecting;
-                    if (running) start();
-                    else if (raf) cancelAnimationFrame(raf);
-                });
-            });
-            io.observe(wrap);
-        }
+        // run on the shared clock only while on screen and someone is watching
+        const loop = reduce ? null : watchLoop(wrap, frame, { fps: 60, onStart: () => { lastT = 0; } });
 
         let resizeTimer;
         const onResize = () => {
@@ -328,8 +309,7 @@ export default function CostHeroBg() {
         return () => {
             window.removeEventListener("resize", onResize);
             clearTimeout(resizeTimer);
-            if (io) io.disconnect();
-            if (raf) cancelAnimationFrame(raf);
+            if (loop) loop.stop();
         };
     }, []);
 

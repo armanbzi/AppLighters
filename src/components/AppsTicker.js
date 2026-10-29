@@ -91,7 +91,9 @@ export default function AppsTicker() {
                                     boxShadow: "0 16px 34px rgba(0,0,0,0.55), 0 0 26px rgba(201,139,255,0.4)",
                                 },
                                 "& .tk-ring": { opacity: 1 },
-                                "& .tk-name": { opacity: 1, transform: "translateX(-50%) translateY(0)" },
+                                "& .tk-name": { opacity: 1, transform: "translateX(-50%) translateY(0)", backdropFilter: "blur(8px)" },
+                                // the ring is invisible at rest, so it only spins while shown
+                                "& .tk-ring > div": { animationPlayState: "running" },
                             },
                         }}
                     >
@@ -108,7 +110,6 @@ export default function AppsTicker() {
                                 whiteSpace: "nowrap",
                                 bgcolor: "rgba(20,16,28,0.94)",
                                 border: "1px solid rgba(201,139,255,0.35)",
-                                backdropFilter: "blur(8px)",
                                 boxShadow: "0 10px 24px rgba(0,0,0,0.5)",
                                 pointerEvents: "none",
                                 zIndex: 3,
@@ -144,7 +145,7 @@ export default function AppsTicker() {
                                     aspectRatio: "1",
                                     transform: "translate(-50%, -50%)",
                                     background: "conic-gradient(from 0deg, rgba(201,139,255,0) 0deg, #C98BFF 90deg, rgba(126,43,216,0) 200deg, #F1E4FF 300deg, rgba(201,139,255,0) 360deg)",
-                                    animation: "aura-spin 4s linear infinite",
+                                    animation: "aura-spin 4s linear infinite paused",
                                 }} />
                             </Box>
                             <Box
