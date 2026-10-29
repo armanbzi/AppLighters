@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
+import { watchLoop } from "../lib/motion.mjs";
 
 // Animated hero background for the UI & UX Modernization service page: a
 // DESIGN PASS sweeping the screen. Scattered mini app-screens sit as thin
@@ -55,7 +56,7 @@ export default function UiHeroBg() {
         const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-        let w = 0, h = 0, raf = 0, running = true;
+        let w = 0, h = 0;
 
         const rgba = (c, a) => `rgba(${c},${Math.max(0, Math.min(1, a)).toFixed(3)})`;
         const ease = (f) => (f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2);
@@ -196,28 +197,16 @@ export default function UiHeroBg() {
                 ctx.fill();
             }
             ctx.restore();
-
-            if (running && !reduce) raf = requestAnimationFrame(frame);
         };
-
-        const start = () => { if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); };
 
         resize();
         if (reduce) {
             // static frame caught mid-sweep: half wireframe, half painted
             frame(CYCLE * 0.4 * 1000);
-        } else {
-            start();
         }
 
-        let io;
-        if (!reduce && typeof IntersectionObserver !== "undefined") {
-            io = new IntersectionObserver((es) => es.forEach((en) => {
-                running = en.isIntersecting;
-                if (running) start(); else if (raf) cancelAnimationFrame(raf);
-            }));
-            io.observe(wrap);
-        }
+        // run on the shared clock only while on screen and someone is watching
+        const loop = reduce ? null : watchLoop(wrap, frame, { fps: 60, });
         let resizeTimer;
         const onResize = () => {
             clearTimeout(resizeTimer);
@@ -228,8 +217,7 @@ export default function UiHeroBg() {
         return () => {
             window.removeEventListener("resize", onResize);
             clearTimeout(resizeTimer);
-            if (io) io.disconnect();
-            if (raf) cancelAnimationFrame(raf);
+            if (loop) loop.stop();
         };
     }, []);
 

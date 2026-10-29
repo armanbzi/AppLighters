@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
+import { watchLoop } from "../lib/motion.mjs";
 
 // Animated background for a capability card. Each service gets its own
 // miniature scene — a distilled echo of that service's hero animation, so a
@@ -327,7 +328,6 @@ function boost(ctx, w, h, t, C, rgba) {
     ctx.restore();
 }
 
-
 // UI & UX Modernization — a wireframe screen repeatedly "painted" into a
 // polished card by a design pass sweeping across, with palette dots drifting.
 function uiux(ctx, w, h, t, C, rgba) {
@@ -439,7 +439,7 @@ export default function CardBg({ variant, accent, hovered }) {
         const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-        let w = 0, h = 0, raf = 0, running = true, last = 0, t = 8, speed = IDLE_SPEED;
+        let w = 0, h = 0, last = 0, t = 8, speed = IDLE_SPEED;
 
         const resize = () => {
             const r = wrap.getBoundingClientRect();
@@ -459,29 +459,19 @@ export default function CardBg({ variant, accent, hovered }) {
             t += dt * speed;
             ctx.clearRect(0, 0, w, h);
             scene(ctx, w, h, t, C, rgba);
-            if (running && !reduce) raf = requestAnimationFrame(frame);
         };
-
-        const start = () => { if (raf) cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame); };
 
         resize();
         if (reduce) frame(performance.now());
-        else start();
 
-        let io;
-        if (!reduce && typeof IntersectionObserver !== "undefined") {
-            io = new IntersectionObserver((es) => es.forEach((e) => {
-                running = e.isIntersecting;
-                if (running) start(); else if (raf) cancelAnimationFrame(raf);
-            }));
-            io.observe(wrap);
-        }
+        // run on the shared clock only while on screen and someone is watching
+        const loop = reduce ? null : watchLoop(wrap, frame, { fps: 30, onStart: () => { last = 0; } });
         let ro;
         if (typeof ResizeObserver !== "undefined") {
             ro = new ResizeObserver(() => { resize(); if (reduce) frame(performance.now()); });
             ro.observe(wrap);
         }
-        return () => { if (io) io.disconnect(); if (ro) ro.disconnect(); if (raf) cancelAnimationFrame(raf); };
+        return () => { if (loop) loop.stop(); if (ro) ro.disconnect(); };
     }, [variant, accent]);
 
     return (

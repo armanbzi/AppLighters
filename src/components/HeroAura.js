@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
+import { watchLoop } from "../lib/motion.mjs";
 
 // The homepage signature visual: a realistic, ethereal purple EYE — a "third
 // eye / all-seeing" motif — that follows the cursor, wrapped in radiating light,
@@ -63,7 +64,6 @@ export default function HeroAura() {
         const SWEEP_S = 3.4; // seconds per pass
         const FLICK = 0.16; // last slice of the pass = the flick back
 
-        let raf = 0, running = true;
         let curX = 0, curY = 0;
         let mouseX = 0, mouseY = 0, hasMouse = false;
         let lastMoveAt = -1e9; // start out watching the apps
@@ -92,10 +92,7 @@ export default function HeroAura() {
             curX += (tgtX - curX) * 0.12;
             curY += (tgtY - curY) * 0.12;
             iris.setAttribute("transform", `translate(${curX.toFixed(2)} ${curY.toFixed(2)})`);
-            if (running) raf = requestAnimationFrame(frame);
         };
-
-        const start = () => { if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); };
 
         const onMove = (e) => {
             mouseX = e.clientX; mouseY = e.clientY;
@@ -108,24 +105,16 @@ export default function HeroAura() {
         window.addEventListener("mousemove", onMove, { passive: true });
         document.addEventListener("mouseleave", onLeave);
         document.addEventListener("mouseenter", onEnter);
-        start();
 
-        // don't burn frames while the hero is scrolled away
-        let io;
-        if (typeof IntersectionObserver !== "undefined") {
-            io = new IntersectionObserver((es) => es.forEach((en) => {
-                running = en.isIntersecting;
-                if (running) start(); else if (raf) cancelAnimationFrame(raf);
-            }));
-            io.observe(wrap);
-        }
+        // track on the shared clock only while the hero is on screen and someone
+        // is watching; off-screen, the rings/halo/blink CSS animations freeze too
+        const loop = watchLoop(wrap, frame, { fps: 60 });
 
         return () => {
             window.removeEventListener("mousemove", onMove);
             document.removeEventListener("mouseleave", onLeave);
             document.removeEventListener("mouseenter", onEnter);
-            if (io) io.disconnect();
-            if (raf) cancelAnimationFrame(raf);
+            loop.stop();
         };
     }, []);
 

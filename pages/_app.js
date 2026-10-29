@@ -7,6 +7,7 @@ import {useRouter} from "next/router";
 import theme from "../styles/theme";
 import createEmotionCache from "../styles/createEmotionCache";
 import {LoadingPage} from "../src/components/LoadingPage";
+import {initMotion} from "../src/lib/motion.mjs";
 import anims from '/styles/_bgAnim.scss';
 
 
@@ -19,6 +20,9 @@ export default function MyApp(props) {
     // per-page background animations (lottie / tsparticles) take a beat to mount.
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+
+    // pause every animation while the tab is hidden or the window unfocused
+    useEffect(() => { initMotion(); }, []);
     useEffect(() => {
         const start = () => setLoading(true);
         const stop = () => setLoading(false);

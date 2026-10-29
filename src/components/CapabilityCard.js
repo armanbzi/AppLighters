@@ -32,7 +32,6 @@ export default function CapabilityCard({ service, sx }) {
                 borderRadius: "18px",
                 bgcolor: "rgba(255,255,255,0.035)",
                 border: "1px solid rgba(255,255,255,0.09)",
-                backdropFilter: "blur(6px)",
                 overflow: "hidden",
                 isolation: "isolate",
                 transition:

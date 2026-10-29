@@ -35,7 +35,6 @@ export default function ProjectCard({ name, img, url, frameWorks = [], ai = fals
                 borderRadius: "18px",
                 bgcolor: "rgba(255,255,255,0.035)",
                 border: "1px solid rgba(255,255,255,0.09)",
-                backdropFilter: "blur(6px)",
                 cursor: "pointer",
                 WebkitTapHighlightColor: "transparent",
                 outline: "none",

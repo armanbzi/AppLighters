@@ -79,7 +79,8 @@ npm run test:e2e
 ## Architecture notes
 
 - **Adding or editing a service** — edit `src/data/services.js`. Each entry holds `{ slug, name, navLabel, icon, accent, tagline, overview, included[], outcomes[] }`. For a bespoke hero animation, register a component in the `HERO_BACKGROUNDS` map in `pages/services/[slug].js`; otherwise it falls back to the shared `AuroraBg`.
-- **Animation pattern** — canvas scenes share one approach: time-based motion (`dt`), an `IntersectionObserver` that pauses the `requestAnimationFrame` loop off-screen, a capped device-pixel-ratio, and a single static frame under `prefers-reduced-motion`.
+- **Animation pattern** — canvas scenes share one approach: time-based motion (`dt`), a capped device-pixel-ratio, and a single static frame under `prefers-reduced-motion`.
+- **Motion budget** (`src/lib/motion.mjs`) — animations only run while someone can see them. Everything pauses while the tab is hidden or the browser window is unfocused (`<html data-motion="paused">` freezes CSS animations; canvas loops stop), and sections scrolled out of view freeze too. All canvas loops share one clock with per-loop frame caps (60 fps; 30 for small ambient backgrounds), so a 120 Hz display doesn't double the work. New animated components should use `watchLoop(el, frame, { fps })` instead of their own `requestAnimationFrame` loop.
 - **Styling order** — SCSS keyframes load globally in `_app.js`; Emotion's cache is configured so MUI `sx` styles win. `_document.js` injects critical styles during SSR to avoid a flash of unstyled content.
 - **Legacy routes** — old URLs (e.g. `/AiDevPage`) are redirected to their new homes in `next.config.js`.
 
