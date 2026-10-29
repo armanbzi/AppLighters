@@ -1,5 +1,17 @@
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
+import {
+    STRIKE_BURST,
+    spawnSparks,
+    emitSparks,
+    stepSparks,
+    strikeEnvelope,
+    sparkColor,
+    beadGlow,
+    shouldLayBead,
+    pruneBeads,
+    torchReducer,
+} from "../lib/weld.mjs";
 
 // Centerpiece of the homepage capability grid: the AppLighters rocket in its
 // service bay, being upgraded by a crew of robot workers — the whole site
@@ -12,7 +24,12 @@ import { useEffect, useRef } from "react";
 //
 // Pure <canvas> + rAF like the service heroes: time-based motion, paused when
 // off-screen, a single posed frame under prefers-reduced-motion, dpr <= 2.
-// Decorative and click-through — it sits in the empty middle cells of the grid.
+// It sits in the empty middle cells of the grid.
+//
+// Interactive: press and hold anywhere on the bay and the cursor becomes an
+// arc welder — a flickering blue-white arc throwing sparks that rain onto the
+// pad, and on the hull it leaves weld beads that cool from white-hot to red.
+// Spark physics live in src/lib/weld.mjs. Off under prefers-reduced-motion.
 
 const CYC = 7.5; // courier install loop (s)
 const WELD = 1.7; // welder duty cycle (s)
@@ -38,6 +55,11 @@ export default function RocketWorksScene({ sx }) {
         let nutAng = 0, lastSnap = -1; // mechanic's ratcheted bolt
         let pulseT = -9; // when the last module install fired the hull pulse
         let prevPh = 0;
+        // the visitor's welding torch (press and hold on the bay)
+        const torch = { lit: false, burst: false, x: 0, y: 0, strikeT: -9, carry: 0, lastBeadT: -9 };
+        const userSparks = [];
+        const beads = []; // weld beads on the hull, cooling
+        let statT = 0, statSparks = "", statBeads = "";
 
         const ease = (f) => (f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2);
         const clamp01 = (v) => Math.max(0, Math.min(1, v));
@@ -432,6 +454,41 @@ export default function RocketWorksScene({ sx }) {
                 ctx.restore();
             }
 
+            /* ── the visitor's torch on the hull ── */
+            // arc light washing the plating, plus weld beads laid where they work
+            // (drawn before the crew so robots in front of the hull stay in front)
+            const overHull = torch.lit && ctx.isPointInPath(sil, torch.x * dpr, torch.y * dpr);
+            if (shouldLayBead({ lit: torch.lit, overHull, t, lastBeadT: torch.lastBeadT })) {
+                beads.push({ x: torch.x, y: torch.y, born: t });
+                torch.lastBeadT = t;
+            }
+            pruneBeads(beads, t);
+            if (overHull || beads.length) {
+                ctx.save();
+                ctx.clip(sil);
+                if (overHull) {
+                    const fl = (0.8 + 0.2 * Math.random()) * strikeEnvelope(t - torch.strikeT);
+                    const wash = ctx.createRadialGradient(torch.x, torch.y, 0, torch.x, torch.y, RW * 0.9);
+                    wash.addColorStop(0, `rgba(255,214,150,${Math.min(0.55, 0.3 * fl).toFixed(3)})`);
+                    wash.addColorStop(1, "rgba(255,214,150,0)");
+                    ctx.fillStyle = wash;
+                    ctx.beginPath(); ctx.arc(torch.x, torch.y, RW * 0.9, 0, Math.PI * 2); ctx.fill();
+                }
+                const br = Math.max(2.2, RW * 0.032);
+                for (const b of beads) {
+                    const { alpha, rgb } = beadGlow(t - b.born);
+                    if (alpha <= 0.01) continue;
+                    const c = `${rgb[0]},${rgb[1]},${rgb[2]}`;
+                    const gb = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, br * 2.6);
+                    gb.addColorStop(0, `rgba(${c},${alpha.toFixed(3)})`);
+                    gb.addColorStop(0.35, `rgba(${c},${(alpha * 0.7).toFixed(3)})`);
+                    gb.addColorStop(1, `rgba(${c},0)`);
+                    ctx.fillStyle = gb;
+                    ctx.beginPath(); ctx.arc(b.x, b.y, br * 2.6, 0, Math.PI * 2); ctx.fill();
+                }
+                ctx.restore();
+            }
+
             /* ── crew ── */
             // mechanic on the bridge, ratcheting a bolt on the collar band
             const bolt = [rx - RW * 0.38, bodyTop + RH * 0.014];
@@ -604,6 +661,54 @@ export default function RocketWorksScene({ sx }) {
 
             if (depth >= 0) drone();
 
+            /* ── the visitor's torch: on top of everything ── */
+            // strike flash, flickering blue-white arc, warm light thrown around the
+            // bay, and a shower of sparks that arc over and rain onto the pad
+            const sparkOpts = { scale: RH, floorY: torch.y < padY ? padY : Math.min(h - 3, torch.y + RH * 0.1) };
+            if (torch.burst) {
+                spawnSparks(userSparks, STRIKE_BURST, torch.x, torch.y, sparkOpts);
+                torch.burst = false;
+            }
+            if (torch.lit) torch.carry = emitSparks(userSparks, torch.x, torch.y, dt, torch.carry, sparkOpts).carry;
+            stepSparks(userSparks, dt, { scale: RH });
+            if (torch.lit || userSparks.length) {
+                ctx.save();
+                ctx.globalCompositeOperation = "lighter";
+                if (torch.lit) {
+                    const fl = (0.78 + 0.22 * Math.random()) * strikeEnvelope(t - torch.strikeT);
+                    const amb = ctx.createRadialGradient(torch.x, torch.y, 0, torch.x, torch.y, RH * 0.55);
+                    amb.addColorStop(0, `rgba(255,190,110,${(0.16 * fl).toFixed(3)})`);
+                    amb.addColorStop(1, "rgba(255,190,110,0)");
+                    ctx.fillStyle = amb;
+                    ctx.beginPath(); ctx.arc(torch.x, torch.y, RH * 0.55, 0, Math.PI * 2); ctx.fill();
+                    const arcR = s * 0.55 * fl;
+                    const arc = ctx.createRadialGradient(torch.x, torch.y, 0, torch.x, torch.y, arcR);
+                    arc.addColorStop(0, "rgba(255,255,255,1)");
+                    arc.addColorStop(0.25, "rgba(205,228,255,0.85)");
+                    arc.addColorStop(1, "rgba(150,190,255,0)");
+                    ctx.fillStyle = arc;
+                    ctx.beginPath(); ctx.arc(torch.x, torch.y, arcR, 0, Math.PI * 2); ctx.fill();
+                }
+                ctx.lineCap = "round";
+                for (const p of userSparks) {
+                    const [r, g, b] = sparkColor(p.life);
+                    ctx.strokeStyle = `rgba(${r},${g},${b},${Math.min(1, p.life * 1.4).toFixed(3)})`;
+                    ctx.lineWidth = p.width;
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p.x - p.vx * 0.028, p.y - p.vy * 0.028);
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+            // live counters on the element (read by the e2e tests), throttled
+            if (t - statT > 0.1) {
+                statT = t;
+                const sp = String(userSparks.length), bd = String(beads.length);
+                if (sp !== statSparks) wrap.dataset.weldSparks = statSparks = sp;
+                if (bd !== statBeads) wrap.dataset.weldBeads = statBeads = bd;
+            }
+
             if (running && !reduce) raf = requestAnimationFrame(frame);
         };
 
@@ -621,10 +726,34 @@ export default function RocketWorksScene({ sx }) {
             }));
             io.observe(wrap);
         }
+        // press and hold to weld: lights the torch at the pointer (see torchReducer)
+        const POINTER_EVENTS = ["pointerdown", "pointermove", "pointerup", "pointercancel", "pointerleave"];
+        const onPointer = (e) => {
+            const r = wrap.getBoundingClientRect();
+            torch.x = e.clientX - r.left;
+            torch.y = e.clientY - r.top;
+            const lit = torchReducer(torch.lit, e);
+            if (e.type === "pointerdown" && lit && e.pointerType === "mouse") e.preventDefault(); // no text selection
+            if (lit === torch.lit) return;
+            torch.lit = lit;
+            if (lit) {
+                torch.strikeT = performance.now() / 1000; // same clock as the rAF timestamp
+                torch.burst = true;
+                torch.carry = 0;
+            }
+            wrap.dataset.welding = lit ? "true" : "false";
+        };
+        if (!reduce) {
+            POINTER_EVENTS.forEach((type) => wrap.addEventListener(type, onPointer));
+            wrap.dataset.interactive = "true";
+            wrap.dataset.welding = "false";
+        }
+
         let rt;
         const onResize = () => { clearTimeout(rt); rt = setTimeout(() => { resize(); if (reduce) frame(2000); }, 150); };
         window.addEventListener("resize", onResize);
         return () => {
+            POINTER_EVENTS.forEach((type) => wrap.removeEventListener(type, onPointer));
             window.removeEventListener("resize", onResize);
             clearTimeout(rt);
             if (io) io.disconnect();
@@ -633,7 +762,23 @@ export default function RocketWorksScene({ sx }) {
     }, []);
 
     return (
-        <Box ref={wrapRef} aria-hidden="true" sx={{ position: "relative", pointerEvents: "none", ...sx }}>
+        <Box
+            ref={wrapRef}
+            aria-hidden="true"
+            data-testid="rocket-works"
+            sx={{
+                position: "relative",
+                touchAction: "pan-y pinch-zoom", // press-and-hold welds; vertical swipes still scroll
+                userSelect: "none",
+                WebkitUserSelect: "none",
+                WebkitTouchCallout: "none",
+                WebkitTapHighlightColor: "transparent",
+                // crosshair invites a press; while welding the arc itself is the cursor
+                '&[data-interactive="true"]': { cursor: "crosshair" },
+                '&[data-welding="true"]': { cursor: "none" },
+                ...sx,
+            }}
+        >
             <Box component="canvas" ref={canvasRef} sx={{ position: "absolute", inset: 0 }} />
         </Box>
     );
